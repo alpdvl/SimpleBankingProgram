@@ -9,13 +9,13 @@ namespace Simple_Banking_Program
 {
     internal class Program
     {
-        
-        
-        
+
+
+
         static void Main(string[] args)
         {
-            
-            
+
+
             int currentPage = 0; // lets program know where it prints rn
             int checkedEntries = 0; // made for registerPageManager, its here on main aswell cuz of the poor code design
             double currentPageMultiplier = 1; // default is mainMultiplier
@@ -25,9 +25,9 @@ namespace Simple_Banking_Program
             Console.CursorVisible = false;
 
             Console.Title = "SharpBank";
-            
-            
-            
+
+
+
 
             PageManager(ref currentPage, ref currentPageMultiplier, ref dataHolder, ref checkedEntries);
         }
@@ -36,7 +36,7 @@ namespace Simple_Banking_Program
         {
 
 
-            
+
 
             // dont forget to update this part when you want to change the amount of rows in any menu
 
@@ -117,17 +117,17 @@ namespace Simple_Banking_Program
             double supportMultiplier = 1000;
             double fillerMultiplier = 10000;
 
-            
+
 
             // helps with giving the true values of each page 
             if (currentPage == 0)
             {
-                
-                for(int i = 0; i < countOfMainPageRows; i++)
+
+                for (int i = 0; i < countOfMainPageRows; i++)
                 {
                     currentPageTitles[i] = mainPageTitles[i];
                 }
-                    countOfCurrentRows = countOfMainPageRows;
+                countOfCurrentRows = countOfMainPageRows;
             }
             else if (currentPage == 1)
             {
@@ -136,7 +136,7 @@ namespace Simple_Banking_Program
                 {
                     currentPageTitles[i] = loginPageTitles[i];
                 }
-                    countOfCurrentRows = countOfLoginPageRows;
+                countOfCurrentRows = countOfLoginPageRows;
             }
             else if (currentPage == 2)
             {
@@ -145,7 +145,7 @@ namespace Simple_Banking_Program
                 {
                     currentPageTitles[i] = registerPageTitles[i];
                 }
-                    countOfCurrentRows = countOfRegisterPageRows;
+                countOfCurrentRows = countOfRegisterPageRows;
             }
             else if (currentPage == 3)
             {
@@ -154,7 +154,7 @@ namespace Simple_Banking_Program
                 {
                     currentPageTitles[i] = supportPageTitles[i];
                 }
-                    countOfCurrentRows = countOfSupportPageRows;
+                countOfCurrentRows = countOfSupportPageRows;
             }
 
             else if (currentPage == 4)
@@ -163,22 +163,22 @@ namespace Simple_Banking_Program
                 for (int i = 0; i < countOfFillerPageRows; i++)
                 {
                     currentPageTitles[i] = fillerPageTitles[i];
-                    }
-                        countOfCurrentRows = countOfFillerPageRows;
+                }
+                countOfCurrentRows = countOfFillerPageRows;
             }
 
             //          PRINTING/refreshing
-            PagePrinter(countOfCurrentRows, currentPageTitles,ref currentPage, ref currentPageMultiplier, ref dataHolder, ref checkedEntries);
+            PagePrinter(countOfCurrentRows, currentPageTitles, ref currentPage, ref currentPageMultiplier, ref dataHolder, ref checkedEntries);
 
-            
+
 
         }
 
-        static void PagePrinter(int amountOfRows, string[] currentPageTitles,ref int currentPage, ref double currentPageMultiplier, ref string[] dataHolder, ref int checkedEntries) 
+        static void PagePrinter(int amountOfRows, string[] currentPageTitles, ref int currentPage, ref double currentPageMultiplier, ref string[] dataHolder, ref int checkedEntries)
         {
             int currentRow = 0; // stands for Y axis 
-             //current page>  |0:Main Page|1:Login Page|2:Register Page|3:Support Page|4:Filler Page|5:EXIT Page|
-            
+                                //current page>  |0:Main Page|1:Login Page|2:Register Page|3:Support Page|4:Filler Page|5:EXIT Page|
+
 
 
 
@@ -197,26 +197,26 @@ namespace Simple_Banking_Program
 
 
 
-             // makes sure that program prints each title one by one
+            // makes sure that program prints each title one by one
             int cycler = 0;
 
 
             while (true)
-                
+
             {
 
 
-            while (cycler < amountOfRows)
-            {
-                
-
-                if(cycler==currentRow)
+                while (cycler < amountOfRows)
                 {
-                    Console.ForegroundColor = ConsoleColor.Black;
-                    Console.BackgroundColor = ConsoleColor.DarkBlue;
-                    
+
+
+                    if (cycler == currentRow)
+                    {
+                        Console.ForegroundColor = ConsoleColor.Black;
+                        Console.BackgroundColor = ConsoleColor.DarkBlue;
+
                         // prints titles, prints cursor and input values in "input titles"
-                        if (currentPageMultiplier==100)
+                        if (currentPageMultiplier == 100)
                         {
                             Console.ForegroundColor = ConsoleColor.DarkGray;
                             Console.BackgroundColor = ConsoleColor.DarkRed;
@@ -224,16 +224,16 @@ namespace Simple_Banking_Program
                             Console.ForegroundColor = ConsoleColor.Black;
                             Console.BackgroundColor = ConsoleColor.DarkBlue;
                             Console.Write(currentPageTitles[cycler]);
-                            if (cycler <4 )
+                            if (cycler < 4)
                             {
-                            Console.Write("-> ");
-                                
+                                Console.Write("-> ");
+
                             }
-                            
-                            if (cycler>=2)
+
+                            if (cycler >= 2)
                             {
-                                Console.Write(dataHolder[cycler-1]);
-                                if (cycler==2 )
+                                Console.Write(dataHolder[cycler - 1]);
+                                if (cycler == 2)
                                 {
                                     Console.WriteLine(" <----This should be same with this");
                                 }
@@ -244,8 +244,8 @@ namespace Simple_Banking_Program
                             }
                             else
                             {
-                            Console.WriteLine(dataHolder[cycler]);
-                                
+                                Console.WriteLine(dataHolder[cycler]);
+
                             }
                         }
                         else
@@ -258,22 +258,22 @@ namespace Simple_Banking_Program
                             Console.WriteLine(currentPageTitles[cycler]);
                         }
                         Console.ForegroundColor = ConsoleColor.Gray;
-                    Console.BackgroundColor = ConsoleColor.Black;
-                        
+                        Console.BackgroundColor = ConsoleColor.Black;
+
 
 
                     }
-                else 
-                {
+                    else
+                    {
 
-                    
-                        if ((currentPageMultiplier == 100) && (cycler<4))
+
+                        if ((currentPageMultiplier == 100) && (cycler < 4))
                         {
-                            Console.Write(currentPageTitles[cycler]+"-> ");
+                            Console.Write(currentPageTitles[cycler] + "-> ");
 
-                            if (cycler>=2)
+                            if (cycler >= 2)
                             {
-                                Console.WriteLine(dataHolder[cycler-1]);
+                                Console.WriteLine(dataHolder[cycler - 1]);
                             }
                             else
                             {
@@ -285,26 +285,26 @@ namespace Simple_Banking_Program
                             Console.WriteLine(currentPageTitles[cycler]);
                         }
                     }
-                    
+
                     cycler++;
                     //Console.WriteLine(currentPageMultiplier); //WIP
                     //Console.WriteLine(currentRow);            //WIP
 
-            }
-                currentRow = UpdateCurrentRowAndPage(currentRow, amountOfRows,ref currentPage, ref currentPageMultiplier, ref dataHolder, ref checkedEntries);
+                }
+                currentRow = UpdateCurrentRowAndPage(currentRow, amountOfRows, ref currentPage, ref currentPageMultiplier, ref dataHolder, ref checkedEntries);
                 cycler = 0;
                 Console.Clear();
 
             }
 
-            
+
 
 
         }
 
 
         // moves cursor handles inputs for pages 
-        static int UpdateCurrentRowAndPage(int currentRow,int amountOfRows,ref int currentPage, ref double currentPageMultiplier, ref string[] dataHolder, ref int checkedEntries)
+        static int UpdateCurrentRowAndPage(int currentRow, int amountOfRows, ref int currentPage, ref double currentPageMultiplier, ref string[] dataHolder, ref int checkedEntries)
         {
 
             var key = Console.ReadKey().Key;
@@ -312,9 +312,9 @@ namespace Simple_Banking_Program
 
             if (key == ConsoleKey.DownArrow)
             {
-                
 
-                if (currentRow < amountOfRows-1)
+
+                if (currentRow < amountOfRows - 1)
                 {
                     currentRow++;
                 }
@@ -331,15 +331,15 @@ namespace Simple_Banking_Program
                 }
                 else
                 {
-                    currentRow = amountOfRows-1;
+                    currentRow = amountOfRows - 1;
                 }
             }
             else if (key == ConsoleKey.Enter)
-            
+
             {
-                if (currentRow == amountOfRows-1)
+                if (currentRow == amountOfRows - 1)
                 {
-                    if(currentPage==0)
+                    if (currentPage == 0)
                     {
                         Console.Clear();
                         Console.WriteLine("Are you sure that you want to exit from the app?");
@@ -350,27 +350,31 @@ namespace Simple_Banking_Program
                         checkedEntries = 0;
                         currentPage = 0;
                         currentPageMultiplier = 1;
+                        for (int i = 0; i <= 3; i++)
+                        {
+                            dataHolder[i] = "";
+                        }
                     }
 
 
 
                 }
-                else 
+                else
                 {
                     // each page has its own unique multiplier value 
-                    if(currentPageMultiplier==10)
+                    if (currentPageMultiplier == 10)
                     {
-                        LoginPageHandler(ref currentRow, ref  dataHolder, ref checkedEntries);   
+                        LoginPageHandler(ref currentRow, ref dataHolder, ref checkedEntries);
                     }
-                    else if(currentPageMultiplier==100)
+                    else if (currentPageMultiplier == 100)
                     {
-                        registerPageHandler(ref currentRow, ref dataHolder,ref checkedEntries); 
+                        registerPageHandler(ref currentRow, ref dataHolder, ref checkedEntries);
                     }
                     else
                     {
-                        currentPage = (currentRow * Convert.ToInt32(currentPageMultiplier)) + 1; 
-                        currentPageMultiplier = Math.Pow(10,currentPage); // tried to give each page its own multiplier that way
-                                                                          // i can easily access them via arithmetic operations 
+                        currentPage = (currentRow * Convert.ToInt32(currentPageMultiplier)) + 1;
+                        currentPageMultiplier = Math.Pow(10, currentPage); // tried to give each page its own multiplier that way
+                                                                           // i can easily access them via arithmetic operations 
 
 
 
@@ -385,8 +389,8 @@ namespace Simple_Banking_Program
                 Console.Clear();
                 // there is too many ref variables in this program we gotta find a way to decrease the
                 // amount of referencing we use in our program
-                PageManager(ref currentPage, ref currentPageMultiplier, ref  dataHolder, ref checkedEntries);
-                
+                PageManager(ref currentPage, ref currentPageMultiplier, ref dataHolder, ref checkedEntries);
+
 
 
             }
@@ -397,8 +401,8 @@ namespace Simple_Banking_Program
         }
 
 
-        
-        static void LoginPageHandler(ref int currentRow, ref string[] dataHolder,ref int checkedEntries)
+
+        static void LoginPageHandler(ref int currentRow, ref string[] dataHolder, ref int checkedEntries)
         {
             switch (currentRow)
             {
@@ -406,12 +410,12 @@ namespace Simple_Banking_Program
                     bool isExist;
                     do
                     {
-                        
+
                         Console.Clear();
                         Console.WriteLine("Enter ur username...");
                         string userNameHolder = Console.ReadLine();
                         int lineOfTerm;
-                        
+
                         readRecord(userNameHolder, "testing.txt", 1, out isExist, out lineOfTerm);
                         if (!isExist)
                         {
@@ -426,10 +430,10 @@ namespace Simple_Banking_Program
                             checkedEntries++;
                             Console.ReadLine();
                         }
-                    } while (!isExist); 
-                    
-                    
-                
+                    } while (!isExist);
+
+
+
                     break;
 
                 case 1:
@@ -443,18 +447,18 @@ namespace Simple_Banking_Program
                         int lineOfTerm;
                         int lineOfTermHolder;
 
-                        readRecord(passwordHolder, "testing.txt", 2, out isExist,out lineOfTermHolder);
+                        readRecord(passwordHolder, "testing.txt", 2, out isExist, out lineOfTermHolder);
                         if (isExist)
                         {
                             readRecord(dataHolder[0], "testing.txt", 1, out isExist, out lineOfTerm);
-                            if (lineOfTerm==lineOfTermHolder)
+                            if (lineOfTerm == lineOfTermHolder)
                             {
                                 dataHolder[1] = passwordHolder;
                                 checkedEntries++;
                                 Console.WriteLine("Correct Password!\nPress enter to continue...");
                                 Console.ReadLine();
                             }
-                            
+
 
                         }
                         else
@@ -465,8 +469,8 @@ namespace Simple_Banking_Program
                     } while (!isExist);
 
 
-                    
-                    
+
+
 
                     break;
                 case 2:
@@ -504,23 +508,24 @@ namespace Simple_Banking_Program
                     } while (!isExist);
 
 
-                    
+
 
                     break;
 
-                    case 3:
+                case 3:
                     Console.WriteLine("checkedEntries:" + checkedEntries);
-                    Console.ReadLine() ;
-                            if(checkedEntries==3)
-                            {
+                    Console.ReadLine();
+                    if (checkedEntries == 3)
+                    {
                         Console.WriteLine("You have Successfuly entered to ur account ");
                         checkedEntries = 0;
                         Console.ReadLine();
+                        bankPageHandler(dataHolder[3]);
                         // we should have a new function in here which handles whole new page system for banking stuff
                     }
-                            else if(checkedEntries>=3)
+                    else if (checkedEntries >= 3)
                     {
-                        Console.WriteLine("There was a mistake your checked entries is:"+checkedEntries);
+                        Console.WriteLine("There was a mistake your checked entries is:" + checkedEntries);
                         Console.ReadLine();
                         checkedEntries = 0;
                     }
@@ -540,11 +545,11 @@ namespace Simple_Banking_Program
             }
         }
 
-         
+
         static void registerPageHandler(ref int currentRow, ref string[] dataHolder, ref int checkedEntries)
         {
-            bool isValid=false;
-            
+            bool isValid = false;
+
 
 
             string userNameHolder;
@@ -553,14 +558,14 @@ namespace Simple_Banking_Program
             string phoneNumber;
 
 
-            
+
             switch (currentRow)
             {
-                
+
                 case 0:
 
 
-                    do
+                    do      // we should prevent user inputting any values with coma because we're using csv files for our data management 
                     {
                         // registering new account gotta add new piece of codes to make sure that each username is unique
                         // with that we also need to implement a way of giving random bank numbers for each new account created which can act as
@@ -568,25 +573,25 @@ namespace Simple_Banking_Program
                         Console.Clear();
                         Console.WriteLine("Enter ur username...");
                         userNameHolder = Console.ReadLine();
-                        if (userNameHolder=="-1")
+                        if (userNameHolder == "-1")
                         {
 
                             break;
                         }
-                        
+
                         else
                         {
                             bool isExist;
                             int lineOfTerm;
                             readRecord(userNameHolder, "testing.txt", 1, out isExist, out lineOfTerm);
                             // need to add checking new username registration with already present usernames in DB 
-                            if (userNameHolder.Length>=16 || userNameHolder.Length<=4)
+                            if (userNameHolder.Length >= 16 || userNameHolder.Length <= 4)
                             {
                                 isValid = false;
                                 Console.WriteLine("Username should be longer than 4 and shorter than 16");
                                 Thread.Sleep(1200);
                             }
-                            else if(isExist)
+                            else if (isExist)
                             {
                                 // it already exists
                                 Console.WriteLine("That user name is already taken please try something else!");
@@ -594,19 +599,19 @@ namespace Simple_Banking_Program
                             }
                             else
                             {
-                                
+
                                 dataHolder[0] = userNameHolder;
                                 checkedEntries++;
                                 isValid = true;
                             }
 
-                            
+
                         }
                     }
                     while (!isValid);
 
 
-                            break;
+                    break;
 
                 case 1:
 
@@ -634,11 +639,11 @@ namespace Simple_Banking_Program
                         }
                     }
                     while (!isValid);
-                    
+
 
                     break;
                 case 2:
-                    
+
 
                     do
                     {
@@ -655,7 +660,7 @@ namespace Simple_Banking_Program
                         else
                         {
 
-                            if (dataHolder[1] ==passwordHolderCheck)
+                            if (dataHolder[1] == passwordHolderCheck)
                             {
                                 checkedEntries++;
                                 isValid = true;
@@ -663,7 +668,7 @@ namespace Simple_Banking_Program
                             else
                             {
                                 Console.WriteLine("Two passwords are different!");
-                                Console.WriteLine("|First one is:"+dataHolder[1]+"|\t|Second one is:"+passwordHolderCheck+"|");
+                                Console.WriteLine("|First one is:" + dataHolder[1] + "|\t|Second one is:" + passwordHolderCheck + "|");
                                 Console.WriteLine("Press enter to continue");
                                 Console.ReadLine();
                             }
@@ -679,8 +684,8 @@ namespace Simple_Banking_Program
 
                     break;
                 case 3:
-                    
-                    
+
+
 
                     do
                     {
@@ -709,13 +714,13 @@ namespace Simple_Banking_Program
 
                     break;
 
-                    case 4:
-                    if (checkedEntries==4)
+                case 4:
+                    if (checkedEntries == 4)
                     {
-                        dataHolder[3] =randomBankNumber();
-                        
-                        addRecord(dataHolder[0], dataHolder[1], dataHolder[2] , dataHolder[3],"testing.txt");
-                        checkedEntries=0;
+                        dataHolder[3] = randomBankNumber();
+
+                        addRecord(dataHolder[0], dataHolder[1], dataHolder[2], dataHolder[3], "testing.txt");
+                        checkedEntries = 0;
                         Console.WriteLine("Values are successfully added to the file!\nPress Enter To Continue...");
                         for (int i = 0; i <= 3; i++)
                         {
@@ -725,7 +730,7 @@ namespace Simple_Banking_Program
                     }
                     else
                     {
-                        if(checkedEntries>4)
+                        if (checkedEntries > 4)
                         {
                             for (int i = 0; i <= 3; i++)
                             {
@@ -735,9 +740,9 @@ namespace Simple_Banking_Program
                         }
                         // added a statement which checks for inputing values into file safely and as a whole!!
                         // that way preventing any serious mistakes from happening with the cost of making things harder for user 
-                        Console.WriteLine("Please complete all of the entries before trying again!   |"+checkedEntries+" out of 4|");
+                        Console.WriteLine("Please complete all of the entries before trying again!   |" + checkedEntries + " out of 4|");
                         Console.WriteLine("Press Enter To Continue...");
-                        for(int i=0; i<=3;i++)
+                        for (int i = 0; i <= 3; i++)
                         {
                             dataHolder[i] = "";
                         }
@@ -774,10 +779,10 @@ namespace Simple_Banking_Program
                     if (recordMatches(searchTerm, fields, positionOfSearchTerm))
                     {
                         //Console.WriteLine("Record found!");
-                        isExist=true;
+                        isExist = true;
                         lineOfTerm = i;
                         return fields;
-                        
+
                     }
                 }
                 isExist = false;
@@ -830,13 +835,13 @@ namespace Simple_Banking_Program
         {
             string last;
             int[] temp = new int[10];
-            int lastButInt=0;
+            int lastButInt = 0;
             Random rnd = new Random();
             temp[0] = 1;
-            temp[1]=3;
+            temp[1] = 3;
             for (int i = 2; i < temp.Length; i++)
             {
-                temp[i] = rnd.Next(0,9);
+                temp[i] = rnd.Next(0, 9);
 
 
 
@@ -844,7 +849,7 @@ namespace Simple_Banking_Program
 
             for (int i = 0; i < temp.Length; i++)
             {
-                lastButInt= lastButInt + (temp[i] * Convert.ToInt32(Math.Pow(10, 9-i)));
+                lastButInt = lastButInt + (temp[i] * Convert.ToInt32(Math.Pow(10, 9 - i)));
             }
             Console.WriteLine(lastButInt);
             Console.ReadLine();
@@ -854,6 +859,143 @@ namespace Simple_Banking_Program
         }
 
 
+        // ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+        // ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+        // ||||||||||||||||||||||||||||||||||||                  NEW PROGRAM                 ||||||||||||||||||||||||||||||||||||||||||||||||||||
+        // ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+        // ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+        // ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+
+
+        // i had to rewrite many functions in NEW functions because of the poor designing chooses
+        // at this point, rewriting of the whole program would be a viable option if this program was sth important
+        static void bankPageHandler(string bankNumber)
+        {
+            int currentDirection=0;
+            int currentRow = 0;
+            int currentPage = 0;
+
+
+
+            while (true)
+            {
+                
+                currentDirection=bankPageInputs(currentDirection);
+                currentRow = rowCalc(currentRow, 5, currentDirection);
+                Console.WriteLine("Current Row Is: "+currentRow);
+            }
+
+            
+
+
+
+
+
+
+
+
+        }
+
+        static int bankPageInputs(int currentDirection)
+        {
+
+
+
+            var key = Console.ReadKey().Key;
+
+
+            if (key == ConsoleKey.DownArrow)
+            {
+
+
+                currentDirection = -1;
+            }
+        
+            else if (key == ConsoleKey.UpArrow)
+            {
+                currentDirection= +1;
+            }
+            else if(key == ConsoleKey.Enter) 
+            {
+                currentDirection = -555;
+            }
+            return currentDirection;
+        }
+
+
+       //static bool depositingPage(int currentRow,string bankNumber)
+       // {
+       //     const int amountOfOptions = 0;
+       //     while (!isExit)
+       //     {
+       //         bankPageInputs(currentRow);
+
+                
+
+
+
+
+
+       //         switch(currentRow)
+       //         {
+       //             case 0:
+
+       //              break;
+
+
+
+
+
+       //                 default: break;
+       //         }
+
+
+
+                
+       //     }
+
+
+       // }
+
+
+        static int rowCalc(int currentRow, int amountOfOptions, int currentDirection)
+        {
+            // have to take a look further look into this part
+            int temp = currentRow + currentDirection;
+
+            if (temp <= (amountOfOptions-1) && temp >0 )
+            {
+                currentRow = currentRow + currentDirection;
+                Console.WriteLine("Current row in first if::::::"+ currentRow);
+            }
+            else if ((currentRow + currentDirection) < 0)
+            {
+
+                currentRow = (amountOfOptions - 1);
+                Console.WriteLine("Current Row in else if||||||||||" + currentRow);
+
+            }
+            else
+            {
+                //currentRow = 0;
+            }
+            currentDirection = 0;
+            return currentRow;
+
+
+            
+
+        }
+
+
+
+
+
+
+
+
+        
 
 
 
