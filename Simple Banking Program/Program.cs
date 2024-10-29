@@ -872,18 +872,136 @@ namespace Simple_Banking_Program
         // at this point, rewriting of the whole program would be a viable option if this program was sth important
         static void bankPageHandler(string bankNumber)
         {
+            Console.Clear();
             int currentDirection=0;
-            int currentRow = 0;
-            int currentPage = 0;
+            int currentRow = 2;
+            //int currentPage = 0;
+            int amountOfOptions = 3;
+            bool isEntered;
 
 
+            //// start screen!
+            Console.ForegroundColor = ConsoleColor.DarkBlue;
+            Console.BackgroundColor = ConsoleColor.Gray;
+
+            Console.Write(" [ ] ");
+
+            Console.BackgroundColor = ConsoleColor.Black;
+            Console.Write(" ");
+
+            Console.ForegroundColor = ConsoleColor.Black;
+            Console.BackgroundColor = ConsoleColor.DarkBlue;
+            Console.WriteLine("Money Transactions");
+            Console.ForegroundColor = ConsoleColor.Gray;
+            Console.BackgroundColor = ConsoleColor.Black;
+
+
+            Console.WriteLine("      Past Transactions");
+            Console.WriteLine("      Interest Page");
+            //////////////////////////////////////////////////////
 
             while (true)
             {
+
                 
-                currentDirection=bankPageInputs(currentDirection);
-                currentRow = rowCalc(currentRow, 5, currentDirection);
-                Console.WriteLine("Current Row Is: "+currentRow);
+                currentDirection =bankPageInputs(currentDirection);
+                currentRow = rowCalc(currentRow, amountOfOptions, currentDirection, out isEntered);
+
+                // money transaction
+
+                // past transactions
+
+                // interest page
+
+                //logout!  this will be added later!
+
+
+                switch (currentRow)
+                {
+                    case 2:
+                        if (isEntered)
+                        {
+                            //Console.WriteLine("currentRow:" + currentRow);
+                            
+                            transferingPage(currentRow, bankNumber);
+                        }
+                        Console.Clear();
+                        Console.ForegroundColor = ConsoleColor.DarkBlue;
+                        Console.BackgroundColor = ConsoleColor.Gray;
+
+                        Console.Write(" [ ] ");
+
+                        Console.BackgroundColor = ConsoleColor.Black;
+                        Console.Write(" ");
+
+                        Console.ForegroundColor = ConsoleColor.Black;
+                        Console.BackgroundColor = ConsoleColor.DarkBlue;
+                        Console.WriteLine("Money Transactions");
+                        Console.ForegroundColor = ConsoleColor.Gray;
+                        Console.BackgroundColor = ConsoleColor.Black;
+
+
+                        Console.WriteLine("      Past Transactions");
+                        Console.WriteLine("      Interest Page");
+
+
+                        break;
+
+                    case 1:
+                        Console.Clear();
+                        Console.WriteLine("      Money Transactions");
+
+                        Console.ForegroundColor = ConsoleColor.DarkBlue;
+                        Console.BackgroundColor = ConsoleColor.Gray;
+                        Console.Write(" [ ] ");
+
+                        Console.BackgroundColor = ConsoleColor.Black;
+                        Console.Write(" ");
+
+                        Console.ForegroundColor = ConsoleColor.Black;
+                        Console.BackgroundColor = ConsoleColor.DarkBlue;
+                        Console.WriteLine("Past Transactions");
+                        Console.ForegroundColor = ConsoleColor.Gray;
+                        Console.BackgroundColor = ConsoleColor.Black;
+
+                        Console.WriteLine("      Interest Page");
+                        break;
+
+                    case 0:
+                        Console.Clear();
+                        Console.WriteLine("      Money Transactions");
+                        Console.WriteLine("      Past Transactions");
+
+                        Console.ForegroundColor = ConsoleColor.DarkBlue;
+                        Console.BackgroundColor = ConsoleColor.Gray;
+
+                        Console.Write(" [ ] ");
+
+                        Console.BackgroundColor = ConsoleColor.Black;
+                        Console.Write(" ");
+
+                        Console.ForegroundColor = ConsoleColor.Black;
+                        Console.BackgroundColor = ConsoleColor.DarkBlue;
+
+                        Console.WriteLine("Interest Page");
+                        Console.ForegroundColor = ConsoleColor.Gray;
+                        Console.BackgroundColor = ConsoleColor.Black;
+
+
+
+
+                        break;
+
+
+
+                    default: break;
+                }
+
+
+
+                
+                //transferingPage(currentRow, bankNumber);
+                //Console.WriteLine("Current Row Is: "+currentRow);
             }
 
             
@@ -924,69 +1042,243 @@ namespace Simple_Banking_Program
         }
 
 
-       //static bool depositingPage(int currentRow,string bankNumber)
-       // {
-       //     const int amountOfOptions = 0;
-       //     while (!isExit)
-       //     {
-       //         bankPageInputs(currentRow);
+        // dont forget to uncomment this section!
 
+        static void transferingPage(int currentRow, string bankNumber)
+        {
+
+
+            currentRow = 3;
+            Console.Clear();
+            bool isEntered;
+            string[] dataHolder = new string[5];
+            bool isExit = false;
+            const int amountOfOptions = 4;
+            /////////////////////// default screen!
+            Console.ForegroundColor = ConsoleColor.DarkBlue;
+            Console.BackgroundColor = ConsoleColor.Gray;
+
+            Console.Write(" [ ] ");
+
+            Console.BackgroundColor = ConsoleColor.Black;
+            Console.Write(" ");
+
+            Console.ForegroundColor = ConsoleColor.Black;
+            Console.BackgroundColor = ConsoleColor.DarkBlue;
+            Console.WriteLine("Enter the receiver account's Bank Number");
+            Console.ForegroundColor = ConsoleColor.Gray;
+            Console.BackgroundColor = ConsoleColor.Black;
+
+
+            Console.WriteLine("      Enter the amount which you want to send");
+            Console.WriteLine("      Enter your password");
+            Console.WriteLine("      Do you confirm?");
+            /////////////////////////////////////////////////////////////////
+
+
+
+
+            while (!isExit)
+
+            { 
+                
                 
 
-
-
-
-
-       //         switch(currentRow)
-       //         {
-       //             case 0:
-
-       //              break;
-
-
-
-
-
-       //                 default: break;
-       //         }
-
-
-
                 
-       //     }
+                int currentDirection=bankPageInputs(currentRow);
+                currentRow=rowCalc(currentRow,amountOfOptions, currentDirection,out isEntered);
+                Console.Clear();
+                if(isEntered)
+                {
+                    if(currentRow==3)
+                    {
+                        Console.WriteLine("Enter the reciever account's bank number...");
+                        dataHolder[0]=Console.ReadLine();
+                    }
+                    else if(currentRow==2)
+                    {
+                        Console.WriteLine("Enter the amount you want to enter...");
+                        dataHolder[1] = Console.ReadLine();
+                    }
+                    else if (currentRow == 3)
+                    {
+                        Console.WriteLine("Enter ur password...");
+                        dataHolder[2] = Console.ReadLine();
+                    }
+                }
 
 
-       // }
 
 
-        static int rowCalc(int currentRow, int amountOfOptions, int currentDirection)
+
+                switch (currentRow)
+                {
+                    case 3:
+
+                        Console.ForegroundColor = ConsoleColor.DarkBlue;
+                        Console.BackgroundColor = ConsoleColor.Gray;
+
+                        Console.Write(" [ ] ");
+
+                        Console.BackgroundColor = ConsoleColor.Black;
+                        Console.Write(" ");
+
+                        Console.ForegroundColor = ConsoleColor.Black;
+                        Console.BackgroundColor = ConsoleColor.DarkBlue;
+                        Console.WriteLine("Enter the receiver account's Bank Number");
+                        Console.ForegroundColor = ConsoleColor.Gray;
+                        Console.BackgroundColor = ConsoleColor.Black;
+                        
+                        
+                        Console.WriteLine("      Enter the amount which you want to send");
+                        Console.WriteLine("      Enter your password");
+                        Console.WriteLine("      Do you confirm?");
+
+
+                        break;
+
+                    case 2:
+                        Console.WriteLine("      Enter the receiver account's Bank Number");
+
+                        Console.ForegroundColor = ConsoleColor.DarkBlue;
+                        Console.BackgroundColor = ConsoleColor.Gray;
+                        Console.Write(" [ ] ");
+
+                        Console.BackgroundColor = ConsoleColor.Black;
+                        Console.Write(" ");
+
+                        Console.ForegroundColor = ConsoleColor.Black;
+                        Console.BackgroundColor = ConsoleColor.DarkBlue;
+                        Console.WriteLine("Enter the amount which you want to send");
+                        Console.ForegroundColor = ConsoleColor.Gray;
+                        Console.BackgroundColor = ConsoleColor.Black;
+
+                        Console.WriteLine("      Enter your password");
+                        Console.WriteLine("      Do you confirm?");
+                        break;
+
+                    case 1:
+                        Console.WriteLine("      Enter the receiver account's Bank Number");
+                        Console.WriteLine("      Enter the amount which you want to send");
+
+                        Console.ForegroundColor = ConsoleColor.DarkBlue;
+                        Console.BackgroundColor = ConsoleColor.Gray;
+
+                        Console.Write(" [ ] ");
+
+                        Console.BackgroundColor = ConsoleColor.Black;
+                        Console.Write(" ");
+
+                        Console.ForegroundColor = ConsoleColor.Black;
+                        Console.BackgroundColor = ConsoleColor.DarkBlue;
+
+                        Console.WriteLine("Enter your password");
+                        Console.ForegroundColor = ConsoleColor.Gray;
+                        Console.BackgroundColor = ConsoleColor.Black;
+
+                        Console.WriteLine("      Do you confirm?");
+
+
+
+
+                        break;
+
+
+
+
+
+                    case 0:
+                        Console.WriteLine("      Enter the receiver account's Bank Number");
+                        Console.WriteLine("      Enter the amount which you want to send");
+                        Console.WriteLine("      Enter your password");
+
+                        Console.ForegroundColor = ConsoleColor.DarkBlue;
+                        Console.BackgroundColor = ConsoleColor.Gray;
+
+                        Console.Write(" [ ] ");
+
+                        Console.BackgroundColor = ConsoleColor.Black;
+                        Console.Write(" ");
+
+                        Console.ForegroundColor = ConsoleColor.Black;
+                        Console.BackgroundColor = ConsoleColor.DarkBlue;
+                        Console.WriteLine("Do you confirm?");
+                        
+                        Console.ForegroundColor = ConsoleColor.Gray;
+                        Console.BackgroundColor = ConsoleColor.Black;
+
+                        
+
+
+
+
+                        break;
+
+
+
+
+
+                    default: break;
+                }
+                    
+
+
+
+
+            }
+
+
+        }
+
+
+        static int rowCalc(int currentRow, int amountOfOptions, int currentDirection, out bool isEntered)
         {
             // have to take a look further look into this part
-            int temp = currentRow + currentDirection;
-
-            if (temp <= (amountOfOptions-1) && temp >0 )
+            isEntered = false;
+            if(currentDirection!=-555)
             {
-                currentRow = currentRow + currentDirection;
-                Console.WriteLine("Current row in first if::::::"+ currentRow);
-            }
-            else if ((currentRow + currentDirection) < 0)
-            {
+                int temp = currentRow + currentDirection;
 
-                currentRow = (amountOfOptions - 1);
-                Console.WriteLine("Current Row in else if||||||||||" + currentRow);
+                if (temp <= (amountOfOptions - 1) && temp > 0)
+                {
+                    currentRow = temp;
+                    //Console.WriteLine("Current row in first if::::::"+ currentRow);
+                }
+                else if (temp < 0)
+                {
+
+                    currentRow = (amountOfOptions - 1);
+                    //Console.WriteLine("Current Row in else if||||||||||" + currentRow);
+
+                }
+
+                else
+                {
+                    currentRow = 0;
+                }
+                
+                isEntered = false;
+                return currentRow;
 
             }
             else
             {
-                //currentRow = 0;
-            }
+            isEntered = true;
             currentDirection = 0;
-            return currentRow;
+                
 
+                return currentRow;
+           
 
-            
+                
+            }
+
 
         }
+
+
+
+        
 
 
 
