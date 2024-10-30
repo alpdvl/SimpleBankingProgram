@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Net.Http.Headers;
 using System.Reflection.Emit;
 using System.Text;
 using System.Threading;
@@ -19,10 +21,10 @@ namespace Simple_Banking_Program
 
 
             int currentPage = 0; // lets program know where it prints rn
-            int checkedEntries = 0; // made for registerPageManager, its here on main aswell cuz of the poor code design
+            int checkedEntries = 0; // declared and init. for registerPageManager, its here on main aswell cuz of the poor code design
             double currentPageMultiplier = 1; // default is mainMultiplier
 
-            string[] dataHolder = new string[6]; // made for file handling ||
+            string[] dataHolder = new string[6]; // declared and init. for file handling
 
             Console.CursorVisible = false;
 
@@ -40,10 +42,10 @@ namespace Simple_Banking_Program
 
 
 
-            // dont forget to update this part when you want to change the amount of rows in any menu
 
             int countOfCurrentRows = 5;
 
+            // dont forget to update corresponding part when you want to change the amount of rows in any menu
 
             const int countOfMainPageRows = 5;
             string[] mainPageTitles = new string[countOfMainPageRows]
@@ -178,7 +180,7 @@ namespace Simple_Banking_Program
 
         static void PagePrinter(int amountOfRows, string[] currentPageTitles, ref int currentPage, ref double currentPageMultiplier, ref string[] dataHolder, ref int checkedEntries)
         {
-            int currentRow = 0; // stands for Y axis 
+            int currentRow = 0; // stands for Y axis
                                 //current page>  |0:Main Page|1:Login Page|2:Register Page|3:Support Page|4:Filler Page|5:EXIT Page|
 
 
@@ -389,15 +391,14 @@ namespace Simple_Banking_Program
 
 
                 Console.Clear();
-                // there is too many ref variables in this program we gotta find a way to decrease the
-                // amount of referencing we use in our program
+                
                 PageManager(ref currentPage, ref currentPageMultiplier, ref dataHolder, ref checkedEntries);
 
 
 
             }
 
-            // have no idea about why i've used return instead of putting another ref lmao 
+            
             return currentRow;
 
         }
@@ -406,10 +407,12 @@ namespace Simple_Banking_Program
 
         static void LoginPageHandler(ref int currentRow, ref string[] dataHolder, ref int checkedEntries)
         {
+            bool isCorrect = false;
             switch (currentRow)
             {
                 case 0:
                     bool isExist;
+
                     do
                     {
 
@@ -442,25 +445,19 @@ namespace Simple_Banking_Program
 
                     do
                     {
-
+                        
                         Console.Clear();
                         Console.WriteLine("Enter ur password...");
                         string passwordHolder = Console.ReadLine();
-                        int lineOfTerm;
-                        int lineOfTermHolder;
-
-                        readRecord(passwordHolder, "testing.txt", 2, out isExist, out lineOfTermHolder);
-                        if (isExist)
+                       
+                        string password = "";
+                        checkPassword(dataHolder[0], out password);
+                        if (passwordHolder.Equals(password)) 
                         {
-                            readRecord(dataHolder[0], "testing.txt", 1, out isExist, out lineOfTerm);
-                            if (lineOfTerm == lineOfTermHolder)
-                            {
-                                dataHolder[1] = passwordHolder;
-                                checkedEntries++;
-                                Console.WriteLine("Correct Password!\nPress enter to continue...");
-                                Console.ReadLine();
-                            }
-
+                            dataHolder[1] = passwordHolder;
+                            checkedEntries++;
+                            Console.WriteLine("Correct Password!");
+                            Console.ReadLine();
 
                         }
                         else
@@ -468,7 +465,7 @@ namespace Simple_Banking_Program
                             Console.WriteLine("Wrong Password!\nPress enter to continue...");
                             Console.ReadLine();
                         }
-                    } while (!isExist);
+                    } while (isCorrect);
 
 
 
@@ -488,13 +485,13 @@ namespace Simple_Banking_Program
                         int lineOfTerm;
                         int lineOfTermHolder;
 
-                        readRecord(bankingNumberHolder, "testing.txt", 4, out isExist, out lineOfTermHolder);
+                        readRecord(bankingNumberHolder, "testing.txt", 4, out isExist, out lineOfTermHolder); // checks if that bankingNumber exists in db 
                         if (isExist)
                         {
-                            readRecord(dataHolder[0], "testing.txt", 1, out isExist, out lineOfTerm);
+                            readRecord(dataHolder[0], "testing.txt", 1, out isExist, out lineOfTerm); // compares the username with that banking number
                             if (lineOfTerm == lineOfTermHolder)
                             {
-                                dataHolder[3] = bankingNumberHolder;
+                                dataHolder[3] = bankingNumberHolder; // puts user's bankingnumber to dataholder for storing later uses 
                                 checkedEntries++;
                                 Console.WriteLine("Correct Bank Number!\nPress enter to continue...");
                                 Console.ReadLine();
@@ -523,7 +520,7 @@ namespace Simple_Banking_Program
                         checkedEntries = 0;
                         Console.ReadLine();
                         bankPageHandler(dataHolder[3]);
-                        // we should have a new function in here which handles whole new page system for banking stuff
+                        
                     }
                     else if (checkedEntries >= 3)
                     {
@@ -535,6 +532,7 @@ namespace Simple_Banking_Program
                     {
                         Console.WriteLine("There was probably a mistake!: checkedentries:" + checkedEntries);
                         Console.ReadLine();
+                        checkedEntries = 0;
                     }
 
 
@@ -569,13 +567,11 @@ namespace Simple_Banking_Program
 
                     do      // we should prevent user inputting any values with coma because we're using csv files for our data management 
                     {
-                        // registering new account gotta add new piece of codes to make sure that each username is unique
-                        // with that we also need to implement a way of giving random bank numbers for each new account created which can act as
-                        // username in a way 
+                        
                         Console.Clear();
                         Console.WriteLine("Enter ur username...");
                         userNameHolder = Console.ReadLine();
-                        if (userNameHolder == "-1")
+                        if (userNameHolder == "-1") // -1 exits from input screen
                         {
 
                             break;
@@ -585,8 +581,7 @@ namespace Simple_Banking_Program
                         {
                             bool isExist;
                             int lineOfTerm;
-                            readRecord(userNameHolder, "testing.txt", 1, out isExist, out lineOfTerm);
-                            // need to add checking new username registration with already present usernames in DB 
+                            readRecord(userNameHolder, "testing.txt", 1, out isExist, out lineOfTerm);// checks if username already exists
                             if (userNameHolder.Length >= 16 || userNameHolder.Length <= 4)
                             {
                                 isValid = false;
@@ -601,10 +596,19 @@ namespace Simple_Banking_Program
                             }
                             else
                             {
-
+                                if(userNameHolder.Contains(','))
+                                {
+                                    Console.WriteLine("You cant have ',' in your username please fix that!\nPress Enter To Continue...");
+                                    Console.ReadLine();
+                                    
+                                }
+                                else
+                                {
+                                    
                                 dataHolder[0] = userNameHolder;
                                 checkedEntries++;
                                 isValid = true;
+                                }
                             }
 
 
@@ -632,10 +636,28 @@ namespace Simple_Banking_Program
 
                         else
                         {
+                            if(passwordHolder.Length<3 && passwordHolder.Length > 24)
+                            {
+                                Console.WriteLine("Your password should be longer than 3 and shorter than 24\nPress Enter To Continue...");
+                                Console.ReadLine();
 
-                            dataHolder[1] = passwordHolder;
+                            }
+                            else
+                            {
+                                if(passwordHolder.Contains(","))
+                                {
+                                    Console.WriteLine("You cant have ',' in your password please fix that!\nPress Enter To Continue...");
+                                    Console.ReadLine();
+                                }
+
+                                else
+                                {
+                                    
+                                dataHolder[1] = passwordHolder;
                             checkedEntries++;
                             isValid = true;
+                                }
+                            }
 
 
                         }
@@ -703,10 +725,23 @@ namespace Simple_Banking_Program
 
                         else
                         {
-
+                            if(phoneNumber.Contains(","))
+                            {
+                                Console.WriteLine("You cant have ',' in your phonenumber please fix that!\nPress Enter To Continue...");
+                                Console.ReadLine();
+                            }
+                            else if(!isOnlyDigit(phoneNumber))
+                            {
+                                Console.WriteLine("Phone numbers should only have digits in them, please fix that!\nPress Enter To Continue...");
+                                Console.ReadLine();
+                            }
+                            else
+                            {
+                                
                             dataHolder[2] = phoneNumber;
                             checkedEntries++;
                             isValid = true;
+                            }
 
 
                         }
@@ -724,8 +759,8 @@ namespace Simple_Banking_Program
                         dataHolder[3] = randomBankNumber();
                         while (isExist)
                         {
-                            Console.WriteLine("isExist of register page");
-                            Thread.Sleep(1000);
+                            //Console.WriteLine("isExist of register page");
+                            //Thread.Sleep(1000);
                             readRecord(dataHolder[3], "testing.txt", 1, out isExist, out lineOfTerm);
                             if(isExist)
                             {
@@ -1094,8 +1129,8 @@ namespace Simple_Banking_Program
             /////////////////////////////////////////////////////////////////
 
 
-
-
+            bool isBalanceOkay = false;
+            string balanceText = "";
             while (!isExit)
 
             { 
@@ -1117,9 +1152,38 @@ namespace Simple_Banking_Program
                     }
                     else if(currentRow==2)
                     {
-                        Console.WriteLine("Enter the amount you want to enter...");
-                        dataHolder[1] = Console.ReadLine();
-                        checkedEntries++;
+                        bool isExitRowTwo = false;
+                        isBalanceOkay=false;
+
+                        while (!isBalanceOkay && !isExitRowTwo)
+                        {
+                            // gonna add exit shortcut/key 
+
+
+                            Console.WriteLine("Enter the amount you want to send...");
+                            dataHolder[1] = Console.ReadLine();
+
+                            int currentBalance = 0;
+                            int moneyToSend = Convert.ToInt32(dataHolder[1]);
+                            checkBankRecord(bankNumber, out currentBalance);
+                            //Console.WriteLine(moneyToSend);
+                            //Console.WriteLine("currentbalance:" + currentBalance);
+                            if (currentBalance >= moneyToSend)
+                            {
+                                currentBalance = currentBalance - moneyToSend;
+                                balanceText = Convert.ToString(currentBalance);
+                                isBalanceOkay = true;
+                                isExitRowTwo = true;
+                                checkedEntries++;
+
+                            }
+                            else
+                            {
+                                Console.WriteLine("Your balance is not enough for this transaction!");
+                            }
+                        }
+
+
                     }
                     else if (currentRow == 1)
                     {
@@ -1131,10 +1195,40 @@ namespace Simple_Banking_Program
                     {
                         if (checkedEntries==3)
                         {
-                            editBankRecord(dataHolder[0], "1313","test2.txt");
-                            Console.WriteLine("You've successfuly made the transaction!\nPress any key to continue");
 
-                            Console.ReadKey();
+                            if(isBalanceOkay)
+                            {
+                                int receiverBalance = 0;
+                                int moneyToReceive = 0;
+
+
+
+                                // sender
+                                editBankRecord(bankNumber, balanceText, "test2.txt");
+
+
+
+
+                                //receiver
+                                moneyToReceive= Convert.ToInt32(dataHolder[1]);
+
+                                checkBankRecord(dataHolder[0], out receiverBalance);
+
+                                receiverBalance = moneyToReceive + receiverBalance;
+                                dataHolder[1]= Convert.ToString(receiverBalance);
+
+                                editBankRecord(dataHolder[0], dataHolder[1], "test2.txt");
+                                Console.WriteLine("You've successfuly made the transaction!\nPress any key to continue");
+                                Console.ReadKey();
+
+                                // defaulting checkedentries
+                                checkedEntries = 0;
+
+                            }
+                            
+
+
+                            
                             
                         }
                         else
@@ -1350,11 +1444,11 @@ namespace Simple_Banking_Program
 
                 for (int i = 0; i < everyline.Length; i++)
                 {
-                    Console.WriteLine("ITS FINE!!!!");
-                    Console.ReadKey();
+                    //Console.WriteLine("ITS FINE!!!!");
+                    //Console.ReadKey();
                     string[] eachPlace = everyline[i].Split(',');
-                    Console.WriteLine("????????FINE!!!!");
-                    Console.ReadKey();
+                    //Console.WriteLine("????????FINE!!!!");
+                    //Console.ReadKey();
                     if (eachPlace[0].Equals(bankNumber))
                     {
                         Console.WriteLine("if:" + eachPlace[0]);
@@ -1372,8 +1466,8 @@ namespace Simple_Banking_Program
                     }
                     else
                     {
-                        Console.WriteLine("else:" + eachPlace[0] + "_" + eachPlace[1]);
-                        Console.ReadKey();
+                        //Console.WriteLine("else:" + eachPlace[0] + "_" + eachPlace[1]);
+                        //Console.ReadKey();
                         using (System.IO.StreamWriter file = new System.IO.StreamWriter(tempFile, true))
                         {
                             file.WriteLine(eachPlace[0] + "," + eachPlace[1]);
@@ -1400,10 +1494,104 @@ namespace Simple_Banking_Program
             
         }
 
+        static void checkBankRecord(string bankNumber,out int currentBalance)
+        {
+            bool isRead = false;
+            currentBalance = 0;
+            try
+            {
+                string[] everyline = System.IO.File.ReadAllLines("test2.txt");
 
 
 
+                for (int i = 0; i < everyline.Length; i++)
+                {
+                    string[] eachPlace = everyline[i].Split(',');
 
+                    if (eachPlace[0].Equals(bankNumber)&& !isRead)
+                    {
+
+                        currentBalance = Convert.ToInt32(eachPlace[1]);
+                        
+                        
+                        
+                    }
+
+
+                }
+                
+
+            }
+            catch (Exception ex)
+            {
+
+                throw new ApplicationException("This program made a mistaaaaaaake!: ", ex);
+            }
+        }
+
+        static void checkPassword(string username, out string password)
+        {
+            bool isRead = false;
+            password = "";
+            try
+            {
+                string[] everyline = System.IO.File.ReadAllLines("testing.txt");
+
+
+
+                for (int i = 0; i < everyline.Length; i++)
+                {
+                    string[] eachPlace = everyline[i].Split(',');
+
+                    if (eachPlace[0].Equals(username) && !isRead)
+                    {
+
+                        password = eachPlace[1];
+
+
+
+                    }
+
+
+                }
+                
+
+            }
+            catch (Exception ex)
+            {
+
+                throw new ApplicationException("This program made a mistaaaaaaake!: ", ex);
+            }
+        }
+
+
+
+        static bool isOnlyDigit(string inputOfUser)
+        {
+            char[] digits ={ '0', '1','2','3','4','5','6','7','8','9'};
+            int counter = 0;
+            if (inputOfUser == null) { return false; }
+            if (inputOfUser.Length == 0) { return false; }
+
+            foreach (char character in inputOfUser)
+            {
+                    counter = 0;
+                for(int i=0; i<10; i++)
+                {
+                    if(digits[i] == character)
+                    {
+                        counter++;
+                    }
+                }
+                    if (counter!=1)
+                    {
+                        return false;
+                    }
+            }
+            return true;
+
+
+        }
 
 
 
