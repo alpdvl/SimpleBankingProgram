@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Reflection.Emit;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -513,11 +515,11 @@ namespace Simple_Banking_Program
                     break;
 
                 case 3:
-                    Console.WriteLine("checkedEntries:" + checkedEntries);
-                    Console.ReadLine();
+                    //Console.WriteLine("checkedEntries:" + checkedEntries);
+                    //Console.ReadLine();
                     if (checkedEntries == 3)
                     {
-                        Console.WriteLine("You have Successfuly entered to ur account ");
+                        Console.WriteLine("You have Successfuly entered to ur account\nPress Enter To Continue... ");
                         checkedEntries = 0;
                         Console.ReadLine();
                         bankPageHandler(dataHolder[3]);
@@ -717,16 +719,32 @@ namespace Simple_Banking_Program
                 case 4:
                     if (checkedEntries == 4)
                     {
+                        bool isExist=true;
+                        int lineOfTerm = 4;
                         dataHolder[3] = randomBankNumber();
-
+                        while (isExist)
+                        {
+                            Console.WriteLine("isExist of register page");
+                            Thread.Sleep(1000);
+                            readRecord(dataHolder[3], "testing.txt", 1, out isExist, out lineOfTerm);
+                            if(isExist)
+                            {
+                                dataHolder[3] = randomBankNumber();
+                            }
+                        }
                         addRecord(dataHolder[0], dataHolder[1], dataHolder[2], dataHolder[3], "testing.txt");
                         checkedEntries = 0;
                         Console.WriteLine("Values are successfully added to the file!\nPress Enter To Continue...");
+
+                        addBankRecord(dataHolder[3],"0", "test2.txt");
+                        Console.WriteLine("Bank_account2: done!");
+
+
                         for (int i = 0; i <= 3; i++)
                         {
                             dataHolder[i] = "";
                         }
-                        Console.ReadLine();
+                        //Console.ReadLine();
                     }
                     else
                     {
@@ -746,8 +764,8 @@ namespace Simple_Banking_Program
                         {
                             dataHolder[i] = "";
                         }
-                        checkedEntries = 0;
-                        Console.ReadLine();
+                        //checkedEntries = 0;
+                        //Console.ReadLine();
                     }
                     break;
 
@@ -1047,7 +1065,7 @@ namespace Simple_Banking_Program
         static void transferingPage(int currentRow, string bankNumber)
         {
 
-
+            int checkedEntries=0;
             currentRow = 3;
             Console.Clear();
             bool isEntered;
@@ -1094,23 +1112,45 @@ namespace Simple_Banking_Program
                     {
                         Console.WriteLine("Enter the reciever account's bank number...");
                         dataHolder[0]=Console.ReadLine();
+                        checkedEntries++;
+
                     }
                     else if(currentRow==2)
                     {
                         Console.WriteLine("Enter the amount you want to enter...");
                         dataHolder[1] = Console.ReadLine();
+                        checkedEntries++;
                     }
-                    else if (currentRow == 3)
+                    else if (currentRow == 1)
                     {
                         Console.WriteLine("Enter ur password...");
                         dataHolder[2] = Console.ReadLine();
+                        checkedEntries++;
+                    }
+                    else if(currentRow==0)
+                    {
+                        if (checkedEntries==3)
+                        {
+                            editBankRecord(dataHolder[0], "1313","test2.txt");
+                            Console.WriteLine("You've successfuly made the transaction!\nPress any key to continue");
+
+                            Console.ReadKey();
+                            
+                        }
+                        else
+                        {
+                            Console.WriteLine("There Was a mistake!!!!\nPress any key to continue :"+checkedEntries);
+                            checkedEntries = 0;
+
+                            Console.ReadKey();
+                        }
                     }
                 }
 
 
 
 
-
+                Console.Clear();
                 switch (currentRow)
                 {
                     case 3:
@@ -1220,12 +1260,13 @@ namespace Simple_Banking_Program
 
                     default: break;
                 }
-                    
+
 
 
 
 
             }
+                checkedEntries = 0;
 
 
         }
@@ -1278,7 +1319,86 @@ namespace Simple_Banking_Program
 
 
 
-        
+
+        public static void addBankRecord(string bankNumber,string amountOfMoney ,string filepath)
+        {
+            try
+            {
+                using (System.IO.StreamWriter file = new System.IO.StreamWriter(@filepath, true))
+                {
+                    file.WriteLine(bankNumber + "," + amountOfMoney);
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new ApplicationException("This program made a mistaaaaaaake!: ", ex);
+            }
+        }
+
+
+        static void editBankRecord(string bankNumber,string changedMoney, string filepath)
+        {
+            string tempFile = "temp.txt";
+            bool isEdited = false;
+            
+
+
+
+            try
+            {
+                string[] everyline = System.IO.File.ReadAllLines(filepath);
+
+                for (int i = 0; i < everyline.Length; i++)
+                {
+                    Console.WriteLine("ITS FINE!!!!");
+                    Console.ReadKey();
+                    string[] eachPlace = everyline[i].Split(',');
+                    Console.WriteLine("????????FINE!!!!");
+                    Console.ReadKey();
+                    if (eachPlace[0].Equals(bankNumber))
+                    {
+                        Console.WriteLine("if:" + eachPlace[0]);
+                        Console.ReadKey();
+
+                        if (!isEdited)
+                        {
+                            using (System.IO.StreamWriter file = new System.IO.StreamWriter(tempFile, true))
+                            {
+                                file.WriteLine(bankNumber + "," + changedMoney);
+                            }
+
+                            isEdited = true;
+                        }
+                    }
+                    else
+                    {
+                        Console.WriteLine("else:" + eachPlace[0] + "_" + eachPlace[1]);
+                        Console.ReadKey();
+                        using (System.IO.StreamWriter file = new System.IO.StreamWriter(tempFile, true))
+                        {
+                            file.WriteLine(eachPlace[0] + "," + eachPlace[1]);
+                        }
+                    }
+                }
+
+
+                File.Delete(filepath);
+
+                File.Move(tempFile, filepath);
+                Console.WriteLine("Done!");
+                Console.ReadKey();
+
+
+
+            }
+            catch (Exception ex)
+            {
+
+                throw new ApplicationException("This program made a mistaaaaaaake!: ", ex);
+            }
+
+            
+        }
 
 
 
@@ -1287,7 +1407,6 @@ namespace Simple_Banking_Program
 
 
 
-        
 
 
 
