@@ -914,15 +914,16 @@ namespace Simple_Banking_Program
 
         // ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
         // ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
-        // ||||||||||||||||||||||||||||||||||||                  NEW PROGRAM                 ||||||||||||||||||||||||||||||||||||||||||||||||||||
+        // ||||||||||||||||||||||||||||||||||||               ---------------                ||||||||||||||||||||||||||||||||||||||||||||||||||||
         // ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
         // ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
         // ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
 
 
 
-        // i had to rewrite many functions in NEW functions because of the poor designing chooses
-        // at this point, rewriting of the whole program would be a viable option if this program was sth important
+        // i had to rewrite many functions into NEW functions because of the poor designing chooses
+        
+        
         static void bankPageHandler(string bankNumber)
         {
             Console.Clear();
@@ -1099,15 +1100,20 @@ namespace Simple_Banking_Program
 
         static void transferingPage(int currentRow, string bankNumber)
         {
-
+            string folder = @"transactions";
+            string textFile = "";
+            bool isDone = false;
             int checkedEntries=0;
-            currentRow = 3;
+            currentRow = 4;
             Console.Clear();
             bool isEntered;
             string[] dataHolder = new string[5];
             bool isExit = false;
-            const int amountOfOptions = 4;
+            const int amountOfOptions = 5;
             /////////////////////// default screen!
+            
+
+            // i didnt want to create new dynamic menu printer function, code will get longer but this way its easier to handle exceptions/bugs
             Console.ForegroundColor = ConsoleColor.DarkBlue;
             Console.BackgroundColor = ConsoleColor.Gray;
 
@@ -1126,9 +1132,16 @@ namespace Simple_Banking_Program
             Console.WriteLine("      Enter the amount which you want to send");
             Console.WriteLine("      Enter your password");
             Console.WriteLine("      Do you confirm?");
+
+            Console.ForegroundColor = ConsoleColor.Magenta;
+            Console.BackgroundColor = ConsoleColor.Black;
+            Console.WriteLine("      <-EXIT");
+            Console.ForegroundColor = ConsoleColor.Gray;
+            Console.BackgroundColor = ConsoleColor.Black;
             /////////////////////////////////////////////////////////////////
 
-
+            string pastTransactionSender="ERROR";
+            string pastTransactionReceiver="ERROR";
             bool isBalanceOkay = false;
             string balanceText = "";
             while (!isExit)
@@ -1143,14 +1156,35 @@ namespace Simple_Banking_Program
                 Console.Clear();
                 if(isEntered)
                 {
-                    if(currentRow==3)
+
+
+
+                    if(currentRow==4)
                     {
+                        
+                        while (!isDone)
+                        {
+
+
+                        isDone=false;
                         Console.WriteLine("Enter the reciever account's bank number...");
                         dataHolder[0]=Console.ReadLine();
-                        checkedEntries++;
+
+                            if (isOnlyDigit(dataHolder[0]))
+                            {
+                                isDone = true;
+                            checkedEntries++;
+                            }
+                            else
+                            {
+                                Console.WriteLine("You cant enter anything other than numbers");
+                            }
+                        }
+
+                        isDone = false;
 
                     }
-                    else if(currentRow==2)
+                    else if(currentRow==3)
                     {
                         bool isExitRowTwo = false;
                         isBalanceOkay=false;
@@ -1163,35 +1197,48 @@ namespace Simple_Banking_Program
                             Console.WriteLine("Enter the amount you want to send...");
                             dataHolder[1] = Console.ReadLine();
 
-                            int currentBalance = 0;
-                            int moneyToSend = Convert.ToInt32(dataHolder[1]);
-                            checkBankRecord(bankNumber, out currentBalance);
-                            //Console.WriteLine(moneyToSend);
-                            //Console.WriteLine("currentbalance:" + currentBalance);
-                            if (currentBalance >= moneyToSend)
-                            {
-                                currentBalance = currentBalance - moneyToSend;
-                                balanceText = Convert.ToString(currentBalance);
-                                isBalanceOkay = true;
-                                isExitRowTwo = true;
-                                checkedEntries++;
 
+                            if (isOnlyDigit(dataHolder[1]))
+                            {
+
+
+
+                                pastTransactionSender = "| "+ bankNumber+"(YOU) " + " -> sent -> " + dataHolder[1] + "$ to " + dataHolder[0];
+                                pastTransactionReceiver = "| " + dataHolder[0]+"(YOU) " + " <- received <- " + dataHolder[1] + "$ from " + bankNumber;
+                                int currentBalance = 0;
+                                int moneyToSend = Convert.ToInt32(dataHolder[1]);
+                                checkBankRecord(bankNumber, out currentBalance);
+                                //Console.WriteLine(moneyToSend);
+                                //Console.WriteLine("currentbalance:" + currentBalance);
+                                if (currentBalance >= moneyToSend)
+                                {
+                                    currentBalance = currentBalance - moneyToSend;
+                                    balanceText = Convert.ToString(currentBalance);
+                                    isBalanceOkay = true;
+                                    isExitRowTwo = true;
+                                    checkedEntries++;
+
+                                }
+                                else
+                                {
+                                    Console.WriteLine("Your balance is not enough for this transaction!");
+                                }
                             }
                             else
                             {
-                                Console.WriteLine("Your balance is not enough for this transaction!");
+                                Console.WriteLine("You cant enter anything other than numbers!");
                             }
                         }
 
 
                     }
-                    else if (currentRow == 1)
+                    else if (currentRow == 2)
                     {
                         Console.WriteLine("Enter ur password...");
                         dataHolder[2] = Console.ReadLine();
                         checkedEntries++;
                     }
-                    else if(currentRow==0)
+                    else if(currentRow==1)
                     {
                         if (checkedEntries==3)
                         {
@@ -1218,6 +1265,17 @@ namespace Simple_Banking_Program
                                 dataHolder[1]= Convert.ToString(receiverBalance);
 
                                 editBankRecord(dataHolder[0], dataHolder[1], "test2.txt");
+
+                                //sender
+                                textFile = bankNumber + ".txt";
+                                pastTransactionWriter(pastTransactionSender, folder, textFile);
+
+                                //receiver
+                                textFile = dataHolder[0] + ".txt";
+                                pastTransactionWriter(pastTransactionReceiver, folder, textFile);
+
+
+
                                 Console.WriteLine("You've successfuly made the transaction!\nPress any key to continue");
                                 Console.ReadKey();
 
@@ -1238,6 +1296,18 @@ namespace Simple_Banking_Program
 
                             Console.ReadKey();
                         }
+
+
+                    }
+
+                    else if(currentRow==0)
+                    {
+                        isExit = true;
+                        checkedEntries = 0;
+                        for (int i = 0; i < 4; i++)
+                        {
+                            dataHolder[i] = "";
+                        }
                     }
                 }
 
@@ -1247,7 +1317,7 @@ namespace Simple_Banking_Program
                 Console.Clear();
                 switch (currentRow)
                 {
-                    case 3:
+                    case 4:
 
                         Console.ForegroundColor = ConsoleColor.DarkBlue;
                         Console.BackgroundColor = ConsoleColor.Gray;
@@ -1268,10 +1338,15 @@ namespace Simple_Banking_Program
                         Console.WriteLine("      Enter your password");
                         Console.WriteLine("      Do you confirm?");
 
+                        Console.ForegroundColor = ConsoleColor.Magenta;
+                        Console.BackgroundColor = ConsoleColor.Black;
+                        Console.WriteLine("      <-EXIT");
+                        Console.ForegroundColor = ConsoleColor.Gray;
+                        Console.BackgroundColor = ConsoleColor.Black;
 
                         break;
 
-                    case 2:
+                    case 3:
                         Console.WriteLine("      Enter the receiver account's Bank Number");
 
                         Console.ForegroundColor = ConsoleColor.DarkBlue;
@@ -1289,9 +1364,17 @@ namespace Simple_Banking_Program
 
                         Console.WriteLine("      Enter your password");
                         Console.WriteLine("      Do you confirm?");
+
+
+                        Console.ForegroundColor = ConsoleColor.Magenta;
+                        Console.BackgroundColor = ConsoleColor.Black;
+                        Console.WriteLine("      <-EXIT");
+                        Console.ForegroundColor = ConsoleColor.Gray;
+                        Console.BackgroundColor = ConsoleColor.Black;
+
                         break;
 
-                    case 1:
+                    case 2:
                         Console.WriteLine("      Enter the receiver account's Bank Number");
                         Console.WriteLine("      Enter the amount which you want to send");
 
@@ -1313,6 +1396,12 @@ namespace Simple_Banking_Program
                         Console.WriteLine("      Do you confirm?");
 
 
+                        Console.ForegroundColor = ConsoleColor.Magenta;
+                        Console.BackgroundColor = ConsoleColor.Black;
+                        Console.WriteLine("      <-EXIT");
+                        Console.ForegroundColor = ConsoleColor.Gray;
+                        Console.BackgroundColor = ConsoleColor.Black;
+
 
 
                         break;
@@ -1321,7 +1410,7 @@ namespace Simple_Banking_Program
 
 
 
-                    case 0:
+                    case 1:
                         Console.WriteLine("      Enter the receiver account's Bank Number");
                         Console.WriteLine("      Enter the amount which you want to send");
                         Console.WriteLine("      Enter your password");
@@ -1338,18 +1427,45 @@ namespace Simple_Banking_Program
                         Console.BackgroundColor = ConsoleColor.DarkBlue;
                         Console.WriteLine("Do you confirm?");
                         
+                        
+
+                        Console.ForegroundColor = ConsoleColor.Magenta;
+                        Console.BackgroundColor = ConsoleColor.Black;
+                        Console.WriteLine("      <-EXIT");
                         Console.ForegroundColor = ConsoleColor.Gray;
                         Console.BackgroundColor = ConsoleColor.Black;
 
-                        
 
 
 
 
                         break;
 
+                    case 0:
+
+                        Console.WriteLine("      Enter the receiver account's Bank Number");
+                        Console.WriteLine("      Enter the amount which you want to send");
+                        Console.WriteLine("      Enter your password");
+
+                       
+                        Console.WriteLine("      Do you confirm?");
 
 
+                        Console.ForegroundColor = ConsoleColor.DarkBlue;
+                        Console.BackgroundColor = ConsoleColor.Gray;
+
+                        Console.Write(" [ ] ");
+
+                        Console.BackgroundColor = ConsoleColor.Black;
+                        Console.Write(" ");
+
+                        Console.ForegroundColor = ConsoleColor.Black;
+                        Console.BackgroundColor = ConsoleColor.DarkBlue;
+                        Console.WriteLine("      <-EXIT");
+                        Console.ForegroundColor = ConsoleColor.Gray;
+                        Console.BackgroundColor = ConsoleColor.Black;
+
+                        break;
 
 
                     default: break;
@@ -1593,6 +1709,44 @@ namespace Simple_Banking_Program
 
         }
 
+        static void pastTransactionWriter( string lastTransaction, string folder, string textFile)
+        {
+            string path;
+
+            path = folder + "\\" + textFile;
+
+            bool isExists =false;
+            if(Directory.Exists(folder))
+            {
+                //Console.WriteLine("It already exists");
+
+                isExists = true;
+            }
+            else
+            {
+                Directory.CreateDirectory(folder);
+                //Console.WriteLine("Created the folder!");
+                isExists=true;
+            }
+
+            if(isExists)
+            {
+                try
+                {
+                    using (System.IO.StreamWriter file = new System.IO.StreamWriter(path, true))
+                    {
+                        file.WriteLine(lastTransaction);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    throw new ApplicationException("This program made a mistaaaaaaake!: ", ex);
+                }
+            }
+
+
+
+        }
 
 
 
