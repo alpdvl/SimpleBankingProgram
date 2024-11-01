@@ -18,6 +18,9 @@ namespace Simple_Banking_Program
 
         static void Main(string[] args)
         {
+            
+            
+            
 
 
             int currentPage = 0; // lets program know where it prints rn
@@ -1030,6 +1033,11 @@ namespace Simple_Banking_Program
                         break;
 
                     case 0:
+                        if (isEntered)
+                        {
+                            
+                            InterestHandler(bankNumber);
+                        }
                         Console.Clear();
                         Console.WriteLine("      Money Transactions");
                         Console.WriteLine("      Past Transactions");
@@ -1469,7 +1477,7 @@ namespace Simple_Banking_Program
 
                         Console.ForegroundColor = ConsoleColor.Black;
                         Console.BackgroundColor = ConsoleColor.DarkBlue;
-                        Console.WriteLine("      <-EXIT");
+                        Console.WriteLine("<-EXIT");
                         Console.ForegroundColor = ConsoleColor.Gray;
                         Console.BackgroundColor = ConsoleColor.Black;
 
@@ -1767,48 +1775,330 @@ namespace Simple_Banking_Program
 
 
 
-            
-            
-            try
+            bool isThere=File.Exists(path);
+
+
+            if (isThere)
             {
-                string[] everyline = System.IO.File.ReadAllLines(path);
-
-                Console.Clear();
-                Console.WriteLine("|Last Transactions of yours|");
-
-                for (int i = 0; i < everyline.Length; i++)
+                try
                 {
-                    if (everyline[i].Contains("received"))
+                    string[] everyline = System.IO.File.ReadAllLines(path);
+
+                    Console.Clear();
+                    Console.WriteLine("|Last Transactions of yours|");
+
+                    for (int i = 0; i < everyline.Length; i++)
                     {
-                        
-                        
-                        Console.ForegroundColor = ConsoleColor.Green;
+                        if (everyline[i].Contains("received"))
+                        {
+
+
+                            Console.ForegroundColor = ConsoleColor.Green;
+
+                        }
+                        else
+                        {
+                            Console.ForegroundColor = ConsoleColor.Red;
+                        }
+                        Console.WriteLine(everyline[i]);
+                        Console.ForegroundColor = ConsoleColor.Gray;
+                        Console.WriteLine("____________________________________________________________");
+
 
                     }
-                    else
-                    {
-                        Console.ForegroundColor = ConsoleColor.Red;
-                    }
-                    Console.WriteLine(everyline[i]);
-                    Console.ForegroundColor= ConsoleColor.Gray;
-                    Console.WriteLine("____________________________________________________________");
-                    
+                    Console.WriteLine("Press Enter To Continue...");
+                    Console.ReadLine();
+
 
                 }
-                Console.WriteLine("Press Enter To Continue...");
-                Console.ReadLine();
+                catch (Exception ex)
+                {
 
+                    throw new ApplicationException("This program made a mistaaaaaaake!: ", ex);
+                }
 
             }
-            catch (Exception ex)
+            else
             {
-
-                throw new ApplicationException("This program made a mistaaaaaaake!: ", ex);
+                Console.WriteLine("Couldnt find any transaction for: "+bankNumber+"\nPress Enter To Continue...");
+                Console.ReadLine() ;
             }
+        }
+
+
+        static void InterestHandler(string bankNumber)
+        {
+            Console.Clear ();
+            DateTime dateTime = DateTime.Now;
+            int currentRow=3;
+            bool isEntered;
+
+            int amountOfOptions=4;
+            bool isExit = false;
+
+
+            // start screen
+            Console.WriteLine("Current day of the year: "+dateTime.DayOfYear+ " | Current year: " +dateTime.Year);
+
+
+            Console.ForegroundColor = ConsoleColor.DarkBlue;
+            Console.BackgroundColor = ConsoleColor.Gray;
+
+            Console.Write(" [ ] ");
+
+            Console.BackgroundColor = ConsoleColor.Black;
+            Console.Write(" ");
+
+            Console.ForegroundColor = ConsoleColor.Black;
+            Console.BackgroundColor = ConsoleColor.DarkBlue;
+            Console.WriteLine("Deposit money to ur interest account");
+            Console.ForegroundColor = ConsoleColor.Gray;
+            Console.BackgroundColor = ConsoleColor.Black;
+
+            Console.WriteLine("      Withdraw money from ur interest account");
+            Console.WriteLine("      Take a loan from bank");
+
+            Console.ForegroundColor = ConsoleColor.Magenta;
+            Console.WriteLine("      Back<-");
+            Console.ForegroundColor = ConsoleColor.Gray;
+
+
+            while(!isExit)
+            {
+                //Console.WriteLine(currentRow);
+                int currentDirection = bankPageInputs(currentRow);
+                currentRow = rowCalc(currentRow, amountOfOptions, currentDirection, out isEntered);
+                Console.Clear();
+                //Console.WriteLine(currentRow);
+
+
+
+                switch (currentRow)
+                    {
+                        case 3:
+
+                        if (isEntered)
+                        {
+                            //Console.WriteLine("Depo money...");
+                            DepoMoney(bankNumber);
+                        }
+
+                        Console.WriteLine("Current day of the year: " + dateTime.DayOfYear + " | Current year: " + dateTime.Year);
+                        Console.ForegroundColor = ConsoleColor.DarkBlue;
+                            Console.BackgroundColor = ConsoleColor.Gray;
+
+                            Console.Write(" [ ] ");
+
+                            Console.BackgroundColor = ConsoleColor.Black;
+                            Console.Write(" ");
+
+                            Console.ForegroundColor = ConsoleColor.Black;
+                            Console.BackgroundColor = ConsoleColor.DarkBlue;
+                            Console.WriteLine("Deposit money to ur interest account");
+                            Console.ForegroundColor = ConsoleColor.Gray;
+                            Console.BackgroundColor = ConsoleColor.Black;
+
+                            Console.WriteLine("      Withdraw money from ur interest account");
+                            Console.WriteLine("      Take a loan from bank");
+
+                            Console.ForegroundColor = ConsoleColor.Magenta;
+                            Console.WriteLine("      Back<-");
+                            Console.ForegroundColor = ConsoleColor.Gray;
+
+                            break;
+
+                        case 2:
+                        if (isEntered)
+                        {
+                            Console.WriteLine("withdraw money...");
+                            Console.ReadLine();
+                        }
+
+                        Console.WriteLine("Current day of the year: " + dateTime.DayOfYear + " | Current year: " + dateTime.Year);
+                        Console.WriteLine("      Deposit money to ur interest account");
+                            Console.ForegroundColor = ConsoleColor.DarkBlue;
+                            Console.BackgroundColor = ConsoleColor.Gray;
+
+                            Console.Write(" [ ] ");
+
+                            Console.BackgroundColor = ConsoleColor.Black;
+                            Console.Write(" ");
+                            Console.ForegroundColor = ConsoleColor.Black;
+                            Console.BackgroundColor = ConsoleColor.DarkBlue;
+                            Console.WriteLine("Withdraw money from ur interest account");
+
+                            Console.ForegroundColor = ConsoleColor.Gray;
+                            Console.BackgroundColor = ConsoleColor.Black;
+
+                            Console.WriteLine("      Take a loan from bank");
+
+                            Console.ForegroundColor = ConsoleColor.Magenta;
+                            Console.WriteLine("      Back<-");
+                            Console.ForegroundColor = ConsoleColor.Gray;
+
+                            break;
+
+                        case 1:
+                        if (isEntered)
+                        {
+                            Console.WriteLine("take loan...");
+                            Console.ReadLine();
+                        }
+                        Console.WriteLine("Current day of the year: " + dateTime.DayOfYear + " | Current year: " + dateTime.Year);
+                        Console.WriteLine("      Deposit money to ur interest account");
+                            Console.WriteLine("      Withdraw money from ur interest account");
+                            Console.ForegroundColor = ConsoleColor.DarkBlue;
+                            Console.BackgroundColor = ConsoleColor.Gray;
+
+                            Console.Write(" [ ] ");
+
+                            Console.BackgroundColor = ConsoleColor.Black;
+                            Console.Write(" ");
+                            Console.ForegroundColor = ConsoleColor.Black;
+                            Console.BackgroundColor = ConsoleColor.DarkBlue;
+                            Console.WriteLine("Take a loan from bank");
+
+                            Console.ForegroundColor = ConsoleColor.Gray;
+                            Console.BackgroundColor = ConsoleColor.Black;
+
+
+                            Console.ForegroundColor = ConsoleColor.Magenta;
+                            Console.WriteLine("      Back<-");
+                            Console.ForegroundColor = ConsoleColor.Gray;
+
+
+
+                            break;
+
+
+                        case 0:
+                        if (isEntered)
+                        {
+                            Console.WriteLine("Press Enter To Continue...");
+                            Console.ReadLine();
+                            isExit = true;
+                        }
+                        Console.WriteLine("Current day of the year: " + dateTime.DayOfYear + " | Current year: " + dateTime.Year);
+                        Console.WriteLine("      Deposit money to ur interest account");
+                            Console.WriteLine("      Withdraw money from ur interest account");
+                            Console.WriteLine("      Take a loan from bank");
+                            Console.ForegroundColor = ConsoleColor.DarkBlue;
+                            Console.BackgroundColor = ConsoleColor.Gray;
+
+                            Console.Write(" [ ] ");
+
+                            Console.BackgroundColor = ConsoleColor.Black;
+                            Console.Write(" ");
+                            Console.ForegroundColor = ConsoleColor.Black;
+                            Console.BackgroundColor = ConsoleColor.DarkBlue;
+                            Console.WriteLine("Back<-");
+
+                            Console.ForegroundColor = ConsoleColor.Gray;
+                            Console.BackgroundColor = ConsoleColor.Black;
+
+
+
+
+
+
+
+                            break;
+
+
+
+
+
+
+                    }
+
+                }
+
+
+
+            
+
 
 
         }
 
+
+        static void DepoMoney(string bankNumber)
+        {
+            bool exitLoop = false;
+            string amountOfMoney = "ERROR";   
+            string folder = @"interestManaging";
+            string path;
+            int currentBalance;
+
+            checkBankRecord(bankNumber, out currentBalance);
+
+            path = folder + "\\" +  "interest.txt";
+            DateTime dateTime = DateTime.Now;
+
+            
+            Console.WriteLine("Current interest rate is:%5\nEnter the amount which you want to deposit to ur interest account: ");
+            amountOfMoney=Console.ReadLine();
+            int convertedMoney=Convert.ToInt32(amountOfMoney);
+            while (convertedMoney < currentBalance || !exitLoop)
+            {
+                Console.WriteLine("You cant deposit more than what you have in ur account! | Current Balance in Your Account is: "+currentBalance);
+                Console.WriteLine("Current interest rate is:%5\nEnter the amount which you want to deposit to ur interest account: ");
+                Console.WriteLine("Enter -13 to exit from this page...");
+                amountOfMoney = Console.ReadLine();
+                convertedMoney = Convert.ToInt32(amountOfMoney);
+                if (convertedMoney == -13)
+                {
+                    exitLoop = true;
+                }
+                else
+                {
+                    bool isExists = false;
+                    if (Directory.Exists(folder))
+                    {
+                        //Console.WriteLine("It already exists");
+
+                        isExists = true;
+                    }
+                    else
+                    {
+                        Directory.CreateDirectory(folder);
+                        //Console.WriteLine("Created the folder!");
+                        isExists = true;
+                    }
+
+                    if (isExists)
+                    {
+                        try
+                        {
+                            using (System.IO.StreamWriter file = new System.IO.StreamWriter(path, true))
+                            {
+                                file.WriteLine(bankNumber + "," + amountOfMoney + "," + dateTime.DayOfYear + "," + dateTime.Year);
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new ApplicationException("This program made a mistaaaaaaake!: ", ex);
+                        }
+                    }
+
+                    Console.WriteLine("Successful\nPress Enter To Continue...");
+                    Console.ReadLine();
+
+                    
+                }
+
+
+
+            }
+            Console.Clear();
+
+
+
+
+
+
+
+        }
 
 
 
