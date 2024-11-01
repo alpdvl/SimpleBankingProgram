@@ -378,7 +378,8 @@ namespace Simple_Banking_Program
                     {
                         currentPage = (currentRow * Convert.ToInt32(currentPageMultiplier)) + 1;
                         currentPageMultiplier = Math.Pow(10, currentPage); // tried to give each page its own multiplier that way
-                                                                           // i can easily access them via arithmetic operations 
+                                                                           // i can easily access them via arithmetic operations
+                                                                           // sadly, seems like it didnt work that well
 
 
 
@@ -979,6 +980,9 @@ namespace Simple_Banking_Program
                             
                             transferingPage(currentRow, bankNumber);
                         }
+
+                     
+                        
                         Console.Clear();
                         Console.ForegroundColor = ConsoleColor.DarkBlue;
                         Console.BackgroundColor = ConsoleColor.Gray;
@@ -1002,6 +1006,10 @@ namespace Simple_Banking_Program
                         break;
 
                     case 1:
+                        if (isEntered)
+                        {
+                            checkAndPrintPast(bankNumber);
+                        }
                         Console.Clear();
                         Console.WriteLine("      Money Transactions");
 
@@ -1748,6 +1756,58 @@ namespace Simple_Banking_Program
 
         }
 
+
+        static void checkAndPrintPast(string bankNumber)
+        {
+            string folder = @"transactions";
+            string path;
+            
+
+            path = folder + "\\" + bankNumber+".txt";
+
+
+
+            
+            
+            try
+            {
+                string[] everyline = System.IO.File.ReadAllLines(path);
+
+                Console.Clear();
+                Console.WriteLine("|Last Transactions of yours|");
+
+                for (int i = 0; i < everyline.Length; i++)
+                {
+                    if (everyline[i].Contains("received"))
+                    {
+                        
+                        
+                        Console.ForegroundColor = ConsoleColor.Green;
+
+                    }
+                    else
+                    {
+                        Console.ForegroundColor = ConsoleColor.Red;
+                    }
+                    Console.WriteLine(everyline[i]);
+                    Console.ForegroundColor= ConsoleColor.Gray;
+                    Console.WriteLine("____________________________________________________________");
+                    
+
+                }
+                Console.WriteLine("Press Enter To Continue...");
+                Console.ReadLine();
+
+
+            }
+            catch (Exception ex)
+            {
+
+                throw new ApplicationException("This program made a mistaaaaaaake!: ", ex);
+            }
+
+
+        }
 
 
 
