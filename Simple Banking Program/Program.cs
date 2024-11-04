@@ -1840,7 +1840,7 @@ namespace Simple_Banking_Program
             checkBankRecord(bankNumber, out currentBalance);
 
             // start screen
-            Console.WriteLine("Current day of the year: "+dateTime.DayOfYear+ " | Current year: " +dateTime.Year + "| Current Balance in Your Account is: " + currentBalance);
+            Console.WriteLine("Current day of the year: "+dateTime.DayOfYear+ " | Current year: " +dateTime.Year + "| Current Balance in Your Account is: " + currentBalance+"$");
 
 
             Console.ForegroundColor = ConsoleColor.DarkBlue;
@@ -1885,7 +1885,7 @@ namespace Simple_Banking_Program
                             DepoMoney(bankNumber);
                         }
 
-                        Console.WriteLine("Current day of the year: " + dateTime.DayOfYear + " | Current year: " + dateTime.Year + "| Current Balance in Your Account is: " + currentBalance);
+                        Console.WriteLine("Current day of the year: " + dateTime.DayOfYear + " | Current year: " + dateTime.Year + "| Current Balance in Your Account is: " + currentBalance + "$");
                         Console.ForegroundColor = ConsoleColor.DarkBlue;
                             Console.BackgroundColor = ConsoleColor.Gray;
 
@@ -1916,7 +1916,7 @@ namespace Simple_Banking_Program
                             Console.ReadLine();
                         }
 
-                        Console.WriteLine("Current day of the year: " + dateTime.DayOfYear + " | Current year: " + dateTime.Year + "| Current Balance in Your Account is: " + currentBalance);
+                        Console.WriteLine("Current day of the year: " + dateTime.DayOfYear + " | Current year: " + dateTime.Year + "| Current Balance in Your Account is: " + currentBalance + "$");
                         Console.WriteLine("      Deposit money to ur interest account");
                             Console.ForegroundColor = ConsoleColor.DarkBlue;
                             Console.BackgroundColor = ConsoleColor.Gray;
@@ -1946,7 +1946,7 @@ namespace Simple_Banking_Program
                             Console.WriteLine("take loan...");
                             Console.ReadLine();
                         }
-                        Console.WriteLine("Current day of the year: " + dateTime.DayOfYear + " | Current year: " + dateTime.Year + "| Current Balance in Your Account is: " + currentBalance);
+                        Console.WriteLine("Current day of the year: " + dateTime.DayOfYear + " | Current year: " + dateTime.Year + "| Current Balance in Your Account is: " + currentBalance + "$");
                         Console.WriteLine("      Deposit money to ur interest account");
                             Console.WriteLine("      Withdraw money from ur interest account");
                             Console.ForegroundColor = ConsoleColor.DarkBlue;
@@ -1981,7 +1981,7 @@ namespace Simple_Banking_Program
                             isExit = true;
                         }
                         
-                        Console.WriteLine("Current day of the year: " + dateTime.DayOfYear + " | Current year: " + dateTime.Year +"| Current Balance in Your Account is: " +currentBalance);
+                        Console.WriteLine("Current day of the year: " + dateTime.DayOfYear + " | Current year: " + dateTime.Year +"| Current Balance in Your Account is: " +currentBalance+"$");
                         Console.WriteLine("      Deposit money to ur interest account");
                             Console.WriteLine("      Withdraw money from ur interest account");
                             Console.WriteLine("      Take a loan from bank");
@@ -2027,6 +2027,7 @@ namespace Simple_Banking_Program
 
         static void DepoMoney(string bankNumber)
         {
+            int currentDepo;
             bool exitLoop = false;
             string amountOfMoney = "ERROR";   
             string folder = @"interestManaging";
@@ -2035,7 +2036,7 @@ namespace Simple_Banking_Program
             string textFile;
             checkBankRecord(bankNumber, out currentBalance);
 
-            path = folder + "\\" +  "interest.txt";
+            path = folder + "\\" +  bankNumber+".txt";
             DateTime dateTime = DateTime.Now;
 
 
@@ -2055,8 +2056,8 @@ namespace Simple_Banking_Program
             
             while (convertedMoney < currentBalance && !exitLoop)
             {
-                Console.WriteLine("You cant deposit more than what you have in ur account! | Current Balance in Your Account is: "+currentBalance);
-                Console.WriteLine("Current interest rate is:%5\nEnter the amount which you want to deposit to ur interest account: ");
+                Console.WriteLine("You cant deposit more than what you have in ur account! | Current Balance in Your Account is: "+currentBalance+"$");
+                Console.WriteLine("Current daily interest rate is:%0.11\nEnter the amount which you want to deposit to ur interest account: ");
                 Console.WriteLine("Enter -13 to exit from this page...");
                 amountOfMoney = Console.ReadLine();
                 convertedMoney = Convert.ToInt32(amountOfMoney);
@@ -2064,8 +2065,18 @@ namespace Simple_Banking_Program
                 currentBalance = currentBalance - convertedMoney;
                 amountOfMoney = Convert.ToString(currentBalance);
 
-               
-                
+                int day0;
+                int year0;
+                 
+                // money checker
+               checkInterestDepo(bankNumber, out currentDepo,1);
+
+                //day 0 checker
+                checkInterestDepo(bankNumber, out day0,2);
+
+                //year0 checker
+                checkInterestDepo(bankNumber, out year0,3);
+
                 if (convertedMoney == -13)
                 {
                     exitLoop = true;
@@ -2093,16 +2104,19 @@ namespace Simple_Banking_Program
 
                     if (isExists)
                     {
+                        calculateInterest(day0, year0, dateTime.DayOfYear, dateTime.Year, ref currentDepo);
+                        File.Delete(path);
+                        //Directory.CreateDirectory(folder);
                         try
                         {
                             using (System.IO.StreamWriter file = new System.IO.StreamWriter(path, true))
                             {
-                                file.WriteLine(bankNumber + "," + amountOfMoney + "," + dateTime.DayOfYear + "," + dateTime.Year);
+                                file.WriteLine(bankNumber + "," + (currentDepo+convertedMoney) + "," + dateTime.DayOfYear + "," + dateTime.Year);
                             }
                         }
                         catch (Exception ex)
                         {
-                            throw new ApplicationException("This program made a mistaaaaaaake!: ", ex);
+                            throw new ApplicationException("oh nooooo!: ", ex);
                         }
                     }
 
@@ -2125,7 +2139,95 @@ namespace Simple_Banking_Program
 
         }
 
+        static void checkInterestDepo(string bankNumber, out int currentDepo, int searchTerm)
+        {
+            
+            
+            int lastIndex;
+            currentDepo = 0;
+            string folder = @"interestManaging";
+            string path;
+            path = folder + "\\" + bankNumber + ".txt";
+            Console.WriteLine("current banknumber is:"+bankNumber);
+            Console.ReadLine();
 
+            bool isThere = File.Exists(path);
+
+
+            if (isThere)
+            {
+
+                try
+                {
+                    string[] everyline = System.IO.File.ReadAllLines(path);
+
+
+                    lastIndex = everyline.Length - 1;
+
+                    string[] eachPlace = everyline[lastIndex].Split(',');
+                    currentDepo = Convert.ToInt32(eachPlace[searchTerm]);
+
+
+
+
+
+
+
+                }
+                catch (Exception ex)
+                {
+
+                    throw new ApplicationException("Hell nooo!: ", ex);
+                }
+            }
+            else
+            {
+                currentDepo = 0;
+            }
+        }
+
+        static void calculateInterest( int day0, int year0, int day1, int year1, ref int currentDepo)
+        {
+            int length = 0;
+
+
+            // daily
+            double interestRate= 0.0011;
+
+            
+
+
+            if (day0>day1 && ((year1 - year0)==1))
+
+            {
+                length = 365 - day0 + day1;
+
+
+                
+                
+                
+            }
+            //else if (day0 > day1 && ((year1 - year0) == 2))
+            //{
+            //    length = 365+365 - day0 + day1;
+            //}
+            else if(day1 > day0 && ((year1 - year0) == 1))
+            {
+                length = 365 - day0 + day1;
+            }
+            else
+            {
+                length = day1 - day0;
+            }
+
+
+
+
+            currentDepo = Convert.ToInt32(currentDepo * (Math.Pow(interestRate + 1, length)));
+            Console.WriteLine("Current Money in interest is:" + currentDepo);
+            Console.WriteLine("Current Money in interest is:" + length);
+            Console.ReadKey();
+        }
 
     }
 }
