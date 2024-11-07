@@ -2531,14 +2531,14 @@ namespace Simple_Banking_Program
 
 
                 // if users gonna have limit to taking loan it will be here
-                /*
-                if (convertedMoney > currentDepo)
+                
+                if (convertedMoney+currentDepo > 100000)
                 {
                     convertedMoney = 0;
-                    Console.WriteLine("You cant pay more than ur debt!");
+                    Console.WriteLine("You cant owe more than $100.000,00 to the bank!");
                     continue;
                 }
-                */
+                
 
 
                 //currentDepo = currentDepo + convertedMoney;
@@ -2651,7 +2651,7 @@ namespace Simple_Banking_Program
 
 
             int convertedMoney = 0;
-            checkInterestDepo(bankNumber, out currentDepo, 1, true); // we're actually checking loan depo, the last parameter indicates this 
+            checkInterestDepo(bankNumber, out currentDepo, 1, true); // we're actually checking loan depo, the last parameter indicates that 
 
             //Console.WriteLine("depo:" + currentDepo);
             //Console.ReadLine();
