@@ -1789,6 +1789,7 @@ namespace Simple_Banking_Program
                 }
                 if (counter != 1)
                 {
+                    Console.WriteLine("!!!!!ERRROR");
                     return false;
                 }
             }
@@ -2131,9 +2132,18 @@ namespace Simple_Banking_Program
                 Console.WriteLine("You cant deposit more than what you have in ur account! | Current Balance in Your Account is: " + currentBalance + "$");
                 Console.WriteLine("Current daily interest rate is:%0.11\nEnter the amount which you want to deposit to ur interest account: ");
                 Console.WriteLine("Enter -13 to exit from this page...");
-                amountOfMoney = Console.ReadLine();
-                convertedMoney = Convert.ToInt32(amountOfMoney);
 
+
+                do
+                {
+                    if (amountOfMoney == "-13")
+                    {
+                        break;
+                    }
+                } while (!isOnlyDigit(amountOfMoney = Console.ReadLine()));
+
+
+                convertedMoney = Convert.ToInt32(amountOfMoney);
                 currentBalance = currentBalance - convertedMoney;
                 amountOfMoney = Convert.ToString(currentBalance);
 
@@ -2368,7 +2378,16 @@ namespace Simple_Banking_Program
                 Console.WriteLine("| Current Balance in Your INTEREST ACCOUNT is: " + currentDepo + "$");
                 Console.WriteLine("Current daily interest rate is:%0.11\nEnter the amount which you want to withdraw ur interest account: ");
                 Console.WriteLine("Enter -13 to exit from this page...");
-                amountOfMoney = Console.ReadLine();
+
+                do
+                {
+                    if (amountOfMoney == "-13")
+                    {
+                        break;
+                    }
+                } while (!isOnlyDigit(amountOfMoney = Console.ReadLine()));
+
+                
 
 
                 convertedMoney = Convert.ToInt32(amountOfMoney);
@@ -2495,7 +2514,16 @@ namespace Simple_Banking_Program
                 Console.WriteLine("| Current Balance in Your loan ACCOUNT is: " + "-" + currentDepo + "$");
                 Console.WriteLine("Current daily interest rate is:%0.12\nEnter the amount which you want to take as a loan: ");
                 Console.WriteLine("Enter -13 to exit from this page...");
-                amountOfMoney = Console.ReadLine();
+
+                do
+                {
+                    if (amountOfMoney == "-13")
+                    {
+                        break;
+                    }
+                } while (!isOnlyDigit(amountOfMoney = Console.ReadLine()));
+
+                
 
 
                 convertedMoney = Convert.ToInt32(amountOfMoney);
@@ -2696,7 +2724,15 @@ namespace Simple_Banking_Program
                 Console.WriteLine("| Current Balance in Your loan ACCOUNT is: " + "-" + currentDepo + "$");
                 Console.WriteLine("Current daily interest rate is:%0.12\nEnter the amount which you want to pay: ");
                 Console.WriteLine("Enter -13 to exit from this page...");
-                amountOfMoney = Console.ReadLine();
+
+                do
+                {
+                    if (amountOfMoney=="-13")
+                    {
+                        break;
+                    }
+                } while (!isOnlyDigit(amountOfMoney = Console.ReadLine()));
+                
 
 
                 convertedMoney = Convert.ToInt32(amountOfMoney);
