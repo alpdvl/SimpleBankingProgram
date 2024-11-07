@@ -19,9 +19,9 @@ namespace Simple_Banking_Program
 
         static void Main(string[] args)
         {
-            
-            
-            
+
+
+
 
 
             int currentPage = 0; // lets program know where it prints rn
@@ -396,14 +396,14 @@ namespace Simple_Banking_Program
 
 
                 Console.Clear();
-                
+
                 PageManager(ref currentPage, ref currentPageMultiplier, ref dataHolder, ref checkedEntries);
 
 
 
             }
 
-            
+
             return currentRow;
 
         }
@@ -450,14 +450,14 @@ namespace Simple_Banking_Program
 
                     do
                     {
-                        
+
                         Console.Clear();
                         Console.WriteLine("Enter ur password...");
                         string passwordHolder = Console.ReadLine();
-                       
+
                         string password = "";
                         checkPassword(dataHolder[0], out password);
-                        if (passwordHolder.Equals(password)) 
+                        if (passwordHolder.Equals(password))
                         {
                             dataHolder[1] = passwordHolder;
                             checkedEntries++;
@@ -525,7 +525,7 @@ namespace Simple_Banking_Program
                         checkedEntries = 0;
                         Console.ReadLine();
                         bankPageHandler(dataHolder[3]);
-                        
+
                     }
                     else if (checkedEntries >= 3)
                     {
@@ -572,7 +572,7 @@ namespace Simple_Banking_Program
 
                     do      // we should prevent user inputting any values with coma because we're using csv files for our data management 
                     {
-                        
+
                         Console.Clear();
                         Console.WriteLine("Enter ur username...");
                         userNameHolder = Console.ReadLine();
@@ -601,18 +601,18 @@ namespace Simple_Banking_Program
                             }
                             else
                             {
-                                if(userNameHolder.Contains(','))
+                                if (userNameHolder.Contains(','))
                                 {
                                     Console.WriteLine("You cant have ',' in your username please fix that!\nPress Enter To Continue...");
                                     Console.ReadLine();
-                                    
+
                                 }
                                 else
                                 {
-                                    
-                                dataHolder[0] = userNameHolder;
-                                checkedEntries++;
-                                isValid = true;
+
+                                    dataHolder[0] = userNameHolder;
+                                    checkedEntries++;
+                                    isValid = true;
                                 }
                             }
 
@@ -641,7 +641,7 @@ namespace Simple_Banking_Program
 
                         else
                         {
-                            if(passwordHolder.Length<3 && passwordHolder.Length > 24)
+                            if (passwordHolder.Length < 3 && passwordHolder.Length > 24)
                             {
                                 Console.WriteLine("Your password should be longer than 3 and shorter than 24\nPress Enter To Continue...");
                                 Console.ReadLine();
@@ -649,7 +649,7 @@ namespace Simple_Banking_Program
                             }
                             else
                             {
-                                if(passwordHolder.Contains(","))
+                                if (passwordHolder.Contains(","))
                                 {
                                     Console.WriteLine("You cant have ',' in your password please fix that!\nPress Enter To Continue...");
                                     Console.ReadLine();
@@ -657,10 +657,10 @@ namespace Simple_Banking_Program
 
                                 else
                                 {
-                                    
-                                dataHolder[1] = passwordHolder;
-                            checkedEntries++;
-                            isValid = true;
+
+                                    dataHolder[1] = passwordHolder;
+                                    checkedEntries++;
+                                    isValid = true;
                                 }
                             }
 
@@ -730,22 +730,22 @@ namespace Simple_Banking_Program
 
                         else
                         {
-                            if(phoneNumber.Contains(","))
+                            if (phoneNumber.Contains(","))
                             {
                                 Console.WriteLine("You cant have ',' in your phonenumber please fix that!\nPress Enter To Continue...");
                                 Console.ReadLine();
                             }
-                            else if(!isOnlyDigit(phoneNumber))
+                            else if (!isOnlyDigit(phoneNumber))
                             {
                                 Console.WriteLine("Phone numbers should only have digits in them, please fix that!\nPress Enter To Continue...");
                                 Console.ReadLine();
                             }
                             else
                             {
-                                
-                            dataHolder[2] = phoneNumber;
-                            checkedEntries++;
-                            isValid = true;
+
+                                dataHolder[2] = phoneNumber;
+                                checkedEntries++;
+                                isValid = true;
                             }
 
 
@@ -759,7 +759,7 @@ namespace Simple_Banking_Program
                 case 4:
                     if (checkedEntries == 4)
                     {
-                        bool isExist=true;
+                        bool isExist = true;
                         int lineOfTerm = 4;
                         dataHolder[3] = randomBankNumber();
                         while (isExist)
@@ -767,7 +767,7 @@ namespace Simple_Banking_Program
                             //Console.WriteLine("isExist of register page");
                             //Thread.Sleep(1000);
                             readRecord(dataHolder[3], "testing.txt", 1, out isExist, out lineOfTerm);
-                            if(isExist)
+                            if (isExist)
                             {
                                 dataHolder[3] = randomBankNumber();
                             }
@@ -776,7 +776,7 @@ namespace Simple_Banking_Program
                         checkedEntries = 0;
                         Console.WriteLine("Values are successfully added to the file!\nPress Enter To Continue...");
 
-                        addBankRecord(dataHolder[3],"0", "test2.txt");
+                        addBankRecord(dataHolder[3], "0", "test2.txt");
                         Console.WriteLine("Bank_account2: done!");
 
 
@@ -927,15 +927,16 @@ namespace Simple_Banking_Program
 
 
         // i had to rewrite many functions into NEW functions because of the poor designing chooses
-        
-        
+
+
         static void bankPageHandler(string bankNumber)
         {
+            ConsoleKey key = ConsoleKey.N;
             Console.Clear();
-            int currentDirection=0;
-            int currentRow = 2;
+            int currentDirection = 0;
+            int currentRow = 3;
             //int currentPage = 0;
-            int amountOfOptions = 3;
+            int amountOfOptions = 4;
             bool isEntered;
 
 
@@ -957,13 +958,21 @@ namespace Simple_Banking_Program
 
             Console.WriteLine("      Past Transactions");
             Console.WriteLine("      Interest Page");
+
+
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.BackgroundColor = ConsoleColor.Black;
+
+            Console.WriteLine("      Logout from your account!");
+            Console.ForegroundColor = ConsoleColor.Gray;
+            Console.BackgroundColor = ConsoleColor.Black;
             //////////////////////////////////////////////////////
 
-            while (true)
+            while (key != ConsoleKey.Y)
             {
 
-                
-                currentDirection =bankPageInputs(currentDirection);
+
+                currentDirection = bankPageInputs(currentDirection);
                 currentRow = rowCalc(currentRow, amountOfOptions, currentDirection, out isEntered);
 
                 // money transaction
@@ -977,16 +986,16 @@ namespace Simple_Banking_Program
 
                 switch (currentRow)
                 {
-                    case 2:
+                    case 3:
                         if (isEntered)
                         {
                             //Console.WriteLine("currentRow:" + currentRow);
-                            
+
                             transferingPage(currentRow, bankNumber);
                         }
 
-                     
-                        
+
+
                         Console.Clear();
                         Console.ForegroundColor = ConsoleColor.DarkBlue;
                         Console.BackgroundColor = ConsoleColor.Gray;
@@ -1005,11 +1014,17 @@ namespace Simple_Banking_Program
 
                         Console.WriteLine("      Past Transactions");
                         Console.WriteLine("      Interest Page");
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.BackgroundColor = ConsoleColor.Black;
+
+                        Console.WriteLine("      Logout from your account!");
+                        Console.ForegroundColor = ConsoleColor.Gray;
+                        Console.BackgroundColor = ConsoleColor.Black;
 
 
                         break;
 
-                    case 1:
+                    case 2:
                         if (isEntered)
                         {
                             checkAndPrintPast(bankNumber);
@@ -1031,12 +1046,18 @@ namespace Simple_Banking_Program
                         Console.BackgroundColor = ConsoleColor.Black;
 
                         Console.WriteLine("      Interest Page");
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.BackgroundColor = ConsoleColor.Black;
+
+                        Console.WriteLine("      Logout from your account!");
+                        Console.ForegroundColor = ConsoleColor.Gray;
+                        Console.BackgroundColor = ConsoleColor.Black;
                         break;
 
-                    case 0:
+                    case 1:
                         if (isEntered)
                         {
-                            
+
                             InterestHandler(bankNumber);
                         }
                         Console.Clear();
@@ -1058,6 +1079,54 @@ namespace Simple_Banking_Program
                         Console.ForegroundColor = ConsoleColor.Gray;
                         Console.BackgroundColor = ConsoleColor.Black;
 
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.BackgroundColor = ConsoleColor.Black;
+
+                        Console.WriteLine("      Logout from your account!");
+                        Console.ForegroundColor = ConsoleColor.Gray;
+                        Console.BackgroundColor = ConsoleColor.Black;
+
+
+
+
+                        break;
+
+
+
+                    case 0:
+                        if (isEntered)
+                        {
+                            Console.Clear();
+                            Console.WriteLine("ARE YOU SURE THAT YOU WANT LOGOUT FROM YOUR ACCOUNT?\n(y/n)");
+                            key = Console.ReadKey().Key;
+                        }
+                        Console.Clear();
+                        Console.WriteLine("      Money Transactions");
+                        Console.WriteLine("      Past Transactions");
+
+
+
+
+
+                        Console.WriteLine("      Interest Page");
+                        Console.ForegroundColor = ConsoleColor.Gray;
+                        Console.BackgroundColor = ConsoleColor.Black;
+
+                        Console.ForegroundColor = ConsoleColor.DarkBlue;
+                        Console.BackgroundColor = ConsoleColor.Gray;
+
+                        Console.Write(" [ ] ");
+
+                        Console.BackgroundColor = ConsoleColor.Black;
+                        Console.Write(" ");
+
+                        Console.ForegroundColor = ConsoleColor.Black;
+                        Console.BackgroundColor = ConsoleColor.DarkBlue;
+
+                        Console.WriteLine("Logout from your account!");
+                        Console.ForegroundColor = ConsoleColor.Gray;
+                        Console.BackgroundColor = ConsoleColor.Black;
+
 
 
 
@@ -1070,12 +1139,12 @@ namespace Simple_Banking_Program
 
 
 
-                
+
                 //transferingPage(currentRow, bankNumber);
                 //Console.WriteLine("Current Row Is: "+currentRow);
             }
 
-            
+
 
 
 
@@ -1100,12 +1169,12 @@ namespace Simple_Banking_Program
 
                 currentDirection = -1;
             }
-        
+
             else if (key == ConsoleKey.UpArrow)
             {
-                currentDirection= +1;
+                currentDirection = +1;
             }
-            else if(key == ConsoleKey.Enter) 
+            else if (key == ConsoleKey.Enter)
             {
                 currentDirection = -555;
             }
@@ -1120,7 +1189,7 @@ namespace Simple_Banking_Program
             string folder = @"transactions";
             string textFile = "";
             bool isDone = false;
-            int checkedEntries=0;
+            int checkedEntries = 0;
             currentRow = 4;
             Console.Clear();
             bool isEntered;
@@ -1128,7 +1197,7 @@ namespace Simple_Banking_Program
             bool isExit = false;
             const int amountOfOptions = 5;
             /////////////////////// default screen!
-            
+
 
             // i didnt want to create new dynamic menu printer function, code will get longer but this way its easier to handle exceptions/bugs
             Console.ForegroundColor = ConsoleColor.DarkBlue;
@@ -1157,40 +1226,40 @@ namespace Simple_Banking_Program
             Console.BackgroundColor = ConsoleColor.Black;
             /////////////////////////////////////////////////////////////////
 
-            string pastTransactionSender="ERROR";
-            string pastTransactionReceiver="ERROR";
+            string pastTransactionSender = "ERROR";
+            string pastTransactionReceiver = "ERROR";
             bool isBalanceOkay = false;
             string balanceText = "";
             while (!isExit)
 
-            { 
-                
-                
+            {
 
-                
-                int currentDirection=bankPageInputs(currentRow);
-                currentRow=rowCalc(currentRow,amountOfOptions, currentDirection,out isEntered);
+
+
+
+                int currentDirection = bankPageInputs(currentRow);
+                currentRow = rowCalc(currentRow, amountOfOptions, currentDirection, out isEntered);
                 Console.Clear();
-                if(isEntered)
+                if (isEntered)
                 {
 
 
 
-                    if(currentRow==4)
+                    if (currentRow == 4)
                     {
-                        
+
                         while (!isDone)
                         {
 
 
-                        isDone=false;
-                        Console.WriteLine("Enter the reciever account's bank number...");
-                        dataHolder[0]=Console.ReadLine();
+                            isDone = false;
+                            Console.WriteLine("Enter the reciever account's bank number...");
+                            dataHolder[0] = Console.ReadLine();
 
                             if (isOnlyDigit(dataHolder[0]))
                             {
                                 isDone = true;
-                            checkedEntries++;
+                                checkedEntries++;
                             }
                             else
                             {
@@ -1201,10 +1270,10 @@ namespace Simple_Banking_Program
                         isDone = false;
 
                     }
-                    else if(currentRow==3)
+                    else if (currentRow == 3)
                     {
                         bool isExitRowTwo = false;
-                        isBalanceOkay=false;
+                        isBalanceOkay = false;
 
                         while (!isBalanceOkay && !isExitRowTwo)
                         {
@@ -1220,8 +1289,8 @@ namespace Simple_Banking_Program
 
 
 
-                                pastTransactionSender = "| "+ bankNumber+"(YOU) " + " -> sent -> " + dataHolder[1] + "$ to " + dataHolder[0];
-                                pastTransactionReceiver = "| " + dataHolder[0]+"(YOU) " + " <- received <- " + dataHolder[1] + "$ from " + bankNumber;
+                                pastTransactionSender = "| " + bankNumber + "(YOU) " + " -> sent -> " + dataHolder[1] + "$ to " + dataHolder[0];
+                                pastTransactionReceiver = "| " + dataHolder[0] + "(YOU) " + " <- received <- " + dataHolder[1] + "$ from " + bankNumber;
                                 int currentBalance = 0;
                                 int moneyToSend = Convert.ToInt32(dataHolder[1]);
                                 checkBankRecord(bankNumber, out currentBalance);
@@ -1255,12 +1324,12 @@ namespace Simple_Banking_Program
                         dataHolder[2] = Console.ReadLine();
                         checkedEntries++;
                     }
-                    else if(currentRow==1)
+                    else if (currentRow == 1)
                     {
-                        if (checkedEntries==3)
+                        if (checkedEntries == 3)
                         {
 
-                            if(isBalanceOkay)
+                            if (isBalanceOkay)
                             {
                                 int receiverBalance = 0;
                                 int moneyToReceive = 0;
@@ -1274,12 +1343,12 @@ namespace Simple_Banking_Program
 
 
                                 //receiver
-                                moneyToReceive= Convert.ToInt32(dataHolder[1]);
+                                moneyToReceive = Convert.ToInt32(dataHolder[1]);
 
                                 checkBankRecord(dataHolder[0], out receiverBalance);
 
                                 receiverBalance = moneyToReceive + receiverBalance;
-                                dataHolder[1]= Convert.ToString(receiverBalance);
+                                dataHolder[1] = Convert.ToString(receiverBalance);
 
                                 editBankRecord(dataHolder[0], dataHolder[1], "test2.txt");
 
@@ -1300,15 +1369,15 @@ namespace Simple_Banking_Program
                                 checkedEntries = 0;
 
                             }
-                            
 
 
-                            
-                            
+
+
+
                         }
                         else
                         {
-                            Console.WriteLine("There Was a mistake!!!!\nPress any key to continue :"+checkedEntries);
+                            Console.WriteLine("There Was a mistake!!!!\nPress any key to continue :" + checkedEntries);
                             checkedEntries = 0;
 
                             Console.ReadKey();
@@ -1317,7 +1386,7 @@ namespace Simple_Banking_Program
 
                     }
 
-                    else if(currentRow==0)
+                    else if (currentRow == 0)
                     {
                         isExit = true;
                         checkedEntries = 0;
@@ -1349,8 +1418,8 @@ namespace Simple_Banking_Program
                         Console.WriteLine("Enter the receiver account's Bank Number");
                         Console.ForegroundColor = ConsoleColor.Gray;
                         Console.BackgroundColor = ConsoleColor.Black;
-                        
-                        
+
+
                         Console.WriteLine("      Enter the amount which you want to send");
                         Console.WriteLine("      Enter your password");
                         Console.WriteLine("      Do you confirm?");
@@ -1443,8 +1512,8 @@ namespace Simple_Banking_Program
                         Console.ForegroundColor = ConsoleColor.Black;
                         Console.BackgroundColor = ConsoleColor.DarkBlue;
                         Console.WriteLine("Do you confirm?");
-                        
-                        
+
+
 
                         Console.ForegroundColor = ConsoleColor.Magenta;
                         Console.BackgroundColor = ConsoleColor.Black;
@@ -1464,7 +1533,7 @@ namespace Simple_Banking_Program
                         Console.WriteLine("      Enter the amount which you want to send");
                         Console.WriteLine("      Enter your password");
 
-                       
+
                         Console.WriteLine("      Do you confirm?");
 
 
@@ -1493,7 +1562,7 @@ namespace Simple_Banking_Program
 
 
             }
-                checkedEntries = 0;
+            checkedEntries = 0;
 
 
         }
@@ -1503,7 +1572,7 @@ namespace Simple_Banking_Program
         {
             // have to take a look further look into this part
             isEntered = false;
-            if(currentDirection!=-555)
+            if (currentDirection != -555)
             {
                 int temp = currentRow + currentDirection;
 
@@ -1524,21 +1593,21 @@ namespace Simple_Banking_Program
                 {
                     currentRow = 0;
                 }
-                
+
                 isEntered = false;
                 return currentRow;
 
             }
             else
             {
-            isEntered = true;
-            currentDirection = 0;
-                
+                isEntered = true;
+                currentDirection = 0;
+
 
                 return currentRow;
-           
 
-                
+
+
             }
 
 
@@ -1547,7 +1616,7 @@ namespace Simple_Banking_Program
 
 
 
-        public static void addBankRecord(string bankNumber,string amountOfMoney ,string filepath)
+        public static void addBankRecord(string bankNumber, string amountOfMoney, string filepath)
         {
             try
             {
@@ -1563,11 +1632,11 @@ namespace Simple_Banking_Program
         }
 
 
-        static void editBankRecord(string bankNumber,string changedMoney, string filepath)
+        static void editBankRecord(string bankNumber, string changedMoney, string filepath)
         {
             string tempFile = "temp.txt";
             bool isEdited = false;
-            
+
 
 
 
@@ -1624,10 +1693,10 @@ namespace Simple_Banking_Program
                 throw new ApplicationException("This program made a mistaaaaaaake!: ", ex);
             }
 
-            
+
         }
 
-        static void checkBankRecord(string bankNumber,out int currentBalance)
+        static void checkBankRecord(string bankNumber, out int currentBalance)
         {
             bool isRead = false;
             currentBalance = 0;
@@ -1641,18 +1710,18 @@ namespace Simple_Banking_Program
                 {
                     string[] eachPlace = everyline[i].Split(',');
 
-                    if (eachPlace[0].Equals(bankNumber)&& !isRead)
+                    if (eachPlace[0].Equals(bankNumber) && !isRead)
                     {
 
                         currentBalance = Convert.ToInt32(eachPlace[1]);
-                        
-                        
-                        
+
+
+
                     }
 
 
                 }
-                
+
 
             }
             catch (Exception ex)
@@ -1687,7 +1756,7 @@ namespace Simple_Banking_Program
 
 
                 }
-                
+
 
             }
             catch (Exception ex)
@@ -1701,39 +1770,39 @@ namespace Simple_Banking_Program
 
         static bool isOnlyDigit(string inputOfUser)
         {
-            char[] digits ={ '0', '1','2','3','4','5','6','7','8','9'};
+            char[] digits = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' };
             int counter = 0;
             if (inputOfUser == null) { return false; }
             if (inputOfUser.Length == 0) { return false; }
 
             foreach (char character in inputOfUser)
             {
-                    counter = 0;
-                for(int i=0; i<10; i++)
+                counter = 0;
+                for (int i = 0; i < 10; i++)
                 {
-                    if(digits[i] == character)
+                    if (digits[i] == character)
                     {
                         counter++;
                     }
                 }
-                    if (counter!=1)
-                    {
-                        return false;
-                    }
+                if (counter != 1)
+                {
+                    return false;
+                }
             }
             return true;
 
 
         }
 
-        static void pastTransactionWriter( string lastTransaction, string folder, string textFile)
+        static void pastTransactionWriter(string lastTransaction, string folder, string textFile)
         {
             string path;
 
             path = folder + "\\" + textFile;
 
-            bool isExists =false;
-            if(Directory.Exists(folder))
+            bool isExists = false;
+            if (Directory.Exists(folder))
             {
                 //Console.WriteLine("It already exists");
 
@@ -1743,10 +1812,10 @@ namespace Simple_Banking_Program
             {
                 Directory.CreateDirectory(folder);
                 //Console.WriteLine("Created the folder!");
-                isExists=true;
+                isExists = true;
             }
 
-            if(isExists)
+            if (isExists)
             {
                 try
                 {
@@ -1770,13 +1839,13 @@ namespace Simple_Banking_Program
         {
             string folder = @"transactions";
             string path;
-            
-
-            path = folder + "\\" + bankNumber+".txt";
 
 
+            path = folder + "\\" + bankNumber + ".txt";
 
-            bool isThere=File.Exists(path);
+
+
+            bool isThere = File.Exists(path);
 
 
             if (isThere)
@@ -1821,26 +1890,26 @@ namespace Simple_Banking_Program
             }
             else
             {
-                Console.WriteLine("Couldnt find any transaction for: "+bankNumber+"\nPress Enter To Continue...");
-                Console.ReadLine() ;
+                Console.WriteLine("Couldnt find any transaction for: " + bankNumber + "\nPress Enter To Continue...");
+                Console.ReadLine();
             }
         }
 
 
         static void InterestHandler(string bankNumber)
         {
-            Console.Clear ();
+            Console.Clear();
             DateTime dateTime = DateTime.Now;
-            int currentRow=3;
+            int currentRow = 3;
             bool isEntered;
 
-            int amountOfOptions=4;
+            int amountOfOptions = 4;
             bool isExit = false;
             int currentBalance;
             checkBankRecord(bankNumber, out currentBalance);
 
             // start screen
-            Console.WriteLine("Current day of the year: "+dateTime.DayOfYear+ " | Current year: " +dateTime.Year + "| Current Balance in Your Account is: " + currentBalance+"$");
+            Console.WriteLine("Current day of the year: " + dateTime.DayOfYear + " | Current year: " + dateTime.Year + "| Current Balance in Your Account is: " + currentBalance + "$");
 
 
             Console.ForegroundColor = ConsoleColor.DarkBlue;
@@ -1865,7 +1934,7 @@ namespace Simple_Banking_Program
             Console.ForegroundColor = ConsoleColor.Gray;
 
 
-            while(!isExit)
+            while (!isExit)
             {
                 //Console.WriteLine(currentRow);
                 int currentDirection = bankPageInputs(currentRow);
@@ -1876,8 +1945,8 @@ namespace Simple_Banking_Program
 
                 checkBankRecord(bankNumber, out currentBalance);
                 switch (currentRow)
-                    {
-                        case 3:
+                {
+                    case 3:
 
                         if (isEntered)
                         {
@@ -1887,138 +1956,140 @@ namespace Simple_Banking_Program
 
                         Console.WriteLine("Current day of the year: " + dateTime.DayOfYear + " | Current year: " + dateTime.Year + "| Current Balance in Your Account is: " + currentBalance + "$");
                         Console.ForegroundColor = ConsoleColor.DarkBlue;
-                            Console.BackgroundColor = ConsoleColor.Gray;
+                        Console.BackgroundColor = ConsoleColor.Gray;
 
-                            Console.Write(" [ ] ");
+                        Console.Write(" [ ] ");
 
-                            Console.BackgroundColor = ConsoleColor.Black;
-                            Console.Write(" ");
+                        Console.BackgroundColor = ConsoleColor.Black;
+                        Console.Write(" ");
 
-                            Console.ForegroundColor = ConsoleColor.Black;
-                            Console.BackgroundColor = ConsoleColor.DarkBlue;
-                            Console.WriteLine("Deposit money to ur interest account");
-                            Console.ForegroundColor = ConsoleColor.Gray;
-                            Console.BackgroundColor = ConsoleColor.Black;
+                        Console.ForegroundColor = ConsoleColor.Black;
+                        Console.BackgroundColor = ConsoleColor.DarkBlue;
+                        Console.WriteLine("Deposit money to ur interest account");
+                        Console.ForegroundColor = ConsoleColor.Gray;
+                        Console.BackgroundColor = ConsoleColor.Black;
 
-                            Console.WriteLine("      Withdraw money from ur interest account");
-                            Console.WriteLine("      Take a loan from bank");
+                        Console.WriteLine("      Withdraw money from ur interest account");
+                        Console.WriteLine("      Take a loan from bank");
 
-                            Console.ForegroundColor = ConsoleColor.Magenta;
-                            Console.WriteLine("      Back<-");
-                            Console.ForegroundColor = ConsoleColor.Gray;
+                        Console.ForegroundColor = ConsoleColor.Magenta;
+                        Console.WriteLine("      Back<-");
+                        Console.ForegroundColor = ConsoleColor.Gray;
 
-                            break;
+                        break;
 
-                        case 2:
+                    case 2:
                         if (isEntered)
                         {
-                            Console.WriteLine("withdraw money...");
-                            Console.ReadLine();
+                            //Console.WriteLine("withdraw money...");
+                            //Console.ReadLine();
+                            WithdrawMoney(bankNumber);
                         }
 
                         Console.WriteLine("Current day of the year: " + dateTime.DayOfYear + " | Current year: " + dateTime.Year + "| Current Balance in Your Account is: " + currentBalance + "$");
                         Console.WriteLine("      Deposit money to ur interest account");
-                            Console.ForegroundColor = ConsoleColor.DarkBlue;
-                            Console.BackgroundColor = ConsoleColor.Gray;
+                        Console.ForegroundColor = ConsoleColor.DarkBlue;
+                        Console.BackgroundColor = ConsoleColor.Gray;
 
-                            Console.Write(" [ ] ");
+                        Console.Write(" [ ] ");
 
-                            Console.BackgroundColor = ConsoleColor.Black;
-                            Console.Write(" ");
-                            Console.ForegroundColor = ConsoleColor.Black;
-                            Console.BackgroundColor = ConsoleColor.DarkBlue;
-                            Console.WriteLine("Withdraw money from ur interest account");
+                        Console.BackgroundColor = ConsoleColor.Black;
+                        Console.Write(" ");
+                        Console.ForegroundColor = ConsoleColor.Black;
+                        Console.BackgroundColor = ConsoleColor.DarkBlue;
+                        Console.WriteLine("Withdraw money from ur interest account");
 
-                            Console.ForegroundColor = ConsoleColor.Gray;
-                            Console.BackgroundColor = ConsoleColor.Black;
+                        Console.ForegroundColor = ConsoleColor.Gray;
+                        Console.BackgroundColor = ConsoleColor.Black;
 
-                            Console.WriteLine("      Take a loan from bank");
+                        Console.WriteLine("      Take a loan from bank");
 
-                            Console.ForegroundColor = ConsoleColor.Magenta;
-                            Console.WriteLine("      Back<-");
-                            Console.ForegroundColor = ConsoleColor.Gray;
+                        Console.ForegroundColor = ConsoleColor.Magenta;
+                        Console.WriteLine("      Back<-");
+                        Console.ForegroundColor = ConsoleColor.Gray;
 
-                            break;
+                        break;
 
-                        case 1:
+                    case 1:
                         if (isEntered)
                         {
                             Console.WriteLine("take loan...");
                             Console.ReadLine();
+
                         }
                         Console.WriteLine("Current day of the year: " + dateTime.DayOfYear + " | Current year: " + dateTime.Year + "| Current Balance in Your Account is: " + currentBalance + "$");
                         Console.WriteLine("      Deposit money to ur interest account");
-                            Console.WriteLine("      Withdraw money from ur interest account");
-                            Console.ForegroundColor = ConsoleColor.DarkBlue;
-                            Console.BackgroundColor = ConsoleColor.Gray;
+                        Console.WriteLine("      Withdraw money from ur interest account");
+                        Console.ForegroundColor = ConsoleColor.DarkBlue;
+                        Console.BackgroundColor = ConsoleColor.Gray;
 
-                            Console.Write(" [ ] ");
+                        Console.Write(" [ ] ");
 
-                            Console.BackgroundColor = ConsoleColor.Black;
-                            Console.Write(" ");
-                            Console.ForegroundColor = ConsoleColor.Black;
-                            Console.BackgroundColor = ConsoleColor.DarkBlue;
-                            Console.WriteLine("Take a loan from bank");
+                        Console.BackgroundColor = ConsoleColor.Black;
+                        Console.Write(" ");
+                        Console.ForegroundColor = ConsoleColor.Black;
+                        Console.BackgroundColor = ConsoleColor.DarkBlue;
+                        Console.WriteLine("Take a loan from bank");
 
-                            Console.ForegroundColor = ConsoleColor.Gray;
-                            Console.BackgroundColor = ConsoleColor.Black;
-
-
-                            Console.ForegroundColor = ConsoleColor.Magenta;
-                            Console.WriteLine("      Back<-");
-                            Console.ForegroundColor = ConsoleColor.Gray;
+                        Console.ForegroundColor = ConsoleColor.Gray;
+                        Console.BackgroundColor = ConsoleColor.Black;
 
 
+                        Console.ForegroundColor = ConsoleColor.Magenta;
+                        Console.WriteLine("      Back<-");
+                        Console.ForegroundColor = ConsoleColor.Gray;
 
-                            break;
 
 
-                        case 0:
+                        break;
+
+
+                    case 0:
                         if (isEntered)
                         {
                             Console.WriteLine("Press Enter To Continue...");
                             Console.ReadLine();
                             isExit = true;
                         }
-                        
-                        Console.WriteLine("Current day of the year: " + dateTime.DayOfYear + " | Current year: " + dateTime.Year +"| Current Balance in Your Account is: " +currentBalance+"$");
+
+                        Console.WriteLine("Current day of the year: " + dateTime.DayOfYear + " | Current year: " + dateTime.Year + "| Current Balance in Your Account is: " + currentBalance + "$");
                         Console.WriteLine("      Deposit money to ur interest account");
-                            Console.WriteLine("      Withdraw money from ur interest account");
-                            Console.WriteLine("      Take a loan from bank");
-                            Console.ForegroundColor = ConsoleColor.DarkBlue;
-                            Console.BackgroundColor = ConsoleColor.Gray;
+                        Console.WriteLine("      Withdraw money from ur interest account");
+                        Console.WriteLine("      Take a loan from bank");
+                        Console.ForegroundColor = ConsoleColor.DarkBlue;
+                        Console.BackgroundColor = ConsoleColor.Gray;
 
-                            Console.Write(" [ ] ");
+                        Console.Write(" [ ] ");
 
-                            Console.BackgroundColor = ConsoleColor.Black;
-                            Console.Write(" ");
-                            Console.ForegroundColor = ConsoleColor.Black;
-                            Console.BackgroundColor = ConsoleColor.DarkBlue;
-                            Console.WriteLine("Back<-");
+                        Console.BackgroundColor = ConsoleColor.Black;
+                        Console.Write(" ");
+                        Console.ForegroundColor = ConsoleColor.Black;
+                        Console.BackgroundColor = ConsoleColor.DarkBlue;
+                        Console.WriteLine("Back<-");
 
-                            Console.ForegroundColor = ConsoleColor.Gray;
-                            Console.BackgroundColor = ConsoleColor.Black;
-
-
-
-
-
-
-
-                            break;
+                        Console.ForegroundColor = ConsoleColor.Gray;
+                        Console.BackgroundColor = ConsoleColor.Black;
 
 
 
 
 
 
-                    }
+
+                        break;
+
+
+
+
+
 
                 }
 
+            }
 
 
-            
+
+
 
 
 
@@ -2029,14 +2100,14 @@ namespace Simple_Banking_Program
         {
             int currentDepo;
             bool exitLoop = false;
-            string amountOfMoney = "ERROR";   
+            string amountOfMoney = "ERROR";
             string folder = @"interestManaging";
             string path;
             int currentBalance;
             string textFile;
             checkBankRecord(bankNumber, out currentBalance);
 
-            path = folder + "\\" +  bankNumber+".txt";
+            path = folder + "\\" + bankNumber + ".txt";
             DateTime dateTime = DateTime.Now;
 
 
@@ -2051,12 +2122,12 @@ namespace Simple_Banking_Program
 
 
 
-            int convertedMoney=0;
+            int convertedMoney = 0;
 
-            
+
             while (convertedMoney < currentBalance && !exitLoop)
             {
-                Console.WriteLine("You cant deposit more than what you have in ur account! | Current Balance in Your Account is: "+currentBalance+"$");
+                Console.WriteLine("You cant deposit more than what you have in ur account! | Current Balance in Your Account is: " + currentBalance + "$");
                 Console.WriteLine("Current daily interest rate is:%0.11\nEnter the amount which you want to deposit to ur interest account: ");
                 Console.WriteLine("Enter -13 to exit from this page...");
                 amountOfMoney = Console.ReadLine();
@@ -2067,15 +2138,15 @@ namespace Simple_Banking_Program
 
                 int day0;
                 int year0;
-                 
+
                 // money checker
-               checkInterestDepo(bankNumber, out currentDepo,1);
+                checkInterestDepo(bankNumber, out currentDepo, 1);
 
                 //day 0 checker
-                checkInterestDepo(bankNumber, out day0,2);
+                checkInterestDepo(bankNumber, out day0, 2);
 
                 //year0 checker
-                checkInterestDepo(bankNumber, out year0,3);
+                checkInterestDepo(bankNumber, out year0, 3);
 
                 if (convertedMoney == -13)
                 {
@@ -2111,7 +2182,7 @@ namespace Simple_Banking_Program
                         {
                             using (System.IO.StreamWriter file = new System.IO.StreamWriter(path, true))
                             {
-                                file.WriteLine(bankNumber + "," + (currentDepo+convertedMoney) + "," + dateTime.DayOfYear + "," + dateTime.Year);
+                                file.WriteLine(bankNumber + "," + (currentDepo + convertedMoney) + "," + dateTime.DayOfYear + "," + dateTime.Year);
                             }
                         }
                         catch (Exception ex)
@@ -2123,7 +2194,7 @@ namespace Simple_Banking_Program
                     Console.WriteLine("Successful\nPress Enter To Continue...");
                     Console.ReadLine();
 
-                    
+
                 }
 
 
@@ -2141,15 +2212,15 @@ namespace Simple_Banking_Program
 
         static void checkInterestDepo(string bankNumber, out int currentDepo, int searchTerm)
         {
-            
-            
+
+
             int lastIndex;
             currentDepo = 0;
             string folder = @"interestManaging";
             string path;
             path = folder + "\\" + bankNumber + ".txt";
-            Console.WriteLine("current banknumber is:"+bankNumber);
-            Console.ReadLine();
+            //Console.WriteLine("current banknumber is:"+bankNumber);
+            //Console.ReadLine();
 
             bool isThere = File.Exists(path);
 
@@ -2186,32 +2257,32 @@ namespace Simple_Banking_Program
             }
         }
 
-        static void calculateInterest( int day0, int year0, int day1, int year1, ref int currentDepo)
+        static void calculateInterest(int day0, int year0, int day1, int year1, ref int currentDepo)
         {
             int length = 0;
 
 
             // daily
-            double interestRate= 0.0011;
-
-            
+            double interestRate = 0.0011;
 
 
-            if (day0>day1 && ((year1 - year0)==1))
+
+
+            if (day0 > day1 && ((year1 - year0) == 1))
 
             {
                 length = 365 - day0 + day1;
 
 
-                
-                
-                
+
+
+
             }
             //else if (day0 > day1 && ((year1 - year0) == 2))
             //{
             //    length = 365+365 - day0 + day1;
             //}
-            else if(day1 > day0 && ((year1 - year0) == 1))
+            else if (day1 > day0 && ((year1 - year0) == 1))
             {
                 length = 365 - day0 + day1;
             }
@@ -2224,10 +2295,145 @@ namespace Simple_Banking_Program
 
 
             currentDepo = Convert.ToInt32(currentDepo * (Math.Pow(interestRate + 1, length)));
-            Console.WriteLine("Current Money in interest is:" + currentDepo);
-            Console.WriteLine("Current Money in interest is:" + length);
-            Console.ReadKey();
+            //Console.WriteLine("Current Money in interest is:" + currentDepo);
+            //Console.WriteLine("Current length in interest is:" + length);
+            //Console.ReadKey();
         }
+
+
+        static void WithdrawMoney(string bankNumber)
+        {
+
+            int currentDepo;
+            bool exitLoop = false;
+            string amountOfMoney = "ERROR";
+            string folder = @"interestManaging";
+            string path;
+            int currentBalance;
+            string textFile;
+            checkBankRecord(bankNumber, out currentBalance);
+
+            path = folder + "\\" + bankNumber + ".txt";
+            DateTime dateTime = DateTime.Now;
+
+
+            //Console.WriteLine("Current interest rate is:%5\nEnter the amount which you want to deposit to ur interest account: ");
+            //amountOfMoney = Console.ReadLine();
+            //while (amountOfMoney=="" || amountOfMoney == null)
+            //{
+
+            //Console.WriteLine("You should enter numbers\nCurrent interest rate is:%5\nEnter the amount which you want to deposit to ur interest account: ");
+            //amountOfMoney=Console.ReadLine();
+            //}
+
+
+
+            int convertedMoney = 0;
+            checkInterestDepo(bankNumber, out currentDepo, 1);
+
+            //Console.WriteLine("depo:" + currentDepo);
+            //Console.ReadLine();
+
+            while (convertedMoney <= currentDepo && !exitLoop)
+            {
+                int day0;
+                int year0;
+
+
+                // money checker
+                checkInterestDepo(bankNumber, out currentDepo, 1);
+
+                //day 0 checker
+                checkInterestDepo(bankNumber, out day0, 2);
+
+                //year0 checker
+                checkInterestDepo(bankNumber, out year0, 3);
+                calculateInterest(day0, year0, dateTime.DayOfYear, dateTime.Year, ref currentDepo);
+                Console.WriteLine("| Current Balance in Your INTEREST ACCOUNT is: " + currentDepo + "$");
+                Console.WriteLine("Current daily interest rate is:%0.11\nEnter the amount which you want to withdraw ur interest account: ");
+                Console.WriteLine("Enter -13 to exit from this page...");
+                amountOfMoney = Console.ReadLine();
+
+
+                convertedMoney = Convert.ToInt32(amountOfMoney);
+
+                if (convertedMoney > currentDepo)
+                {
+                    convertedMoney = 0;
+                    Console.WriteLine("You cant withdraw more than what you have in ur account!");
+                    continue;
+                }
+
+
+                //currentDepo = currentDepo + convertedMoney;
+                //amountOfMoney = Convert.ToString(currentDepo);
+
+                currentBalance = convertedMoney + currentBalance;
+
+
+
+                if (convertedMoney == -13)
+                {
+                    exitLoop = true;
+                }
+                else
+                {
+                    editBankRecord(bankNumber, Convert.ToString(currentBalance), "test2.txt");
+                    bool isExists = false;
+                    if (Directory.Exists(folder))
+                    {
+                        //Console.WriteLine("It already exists");
+
+                        isExists = true;
+                    }
+                    else
+                    {
+                        Directory.CreateDirectory(folder);
+                        //Console.WriteLine("Created the folder!");
+                        isExists = true;
+                    }
+                    string pastOfInterest = "| " + bankNumber + "(YOU) " + " <- received <- " + convertedMoney + "$ from Your Interest Account";
+                    textFile = bankNumber + ".txt";
+                    string folderOfPast = @"transactions";
+                    pastTransactionWriter(pastOfInterest, folderOfPast, textFile);
+
+                    if (isExists)
+                    {
+                        //calculateInterest(day0, year0, dateTime.DayOfYear, dateTime.Year, ref currentDepo);
+                        File.Delete(path);
+                        //Directory.CreateDirectory(folder);
+                        try
+                        {
+                            using (System.IO.StreamWriter file = new System.IO.StreamWriter(path, true))
+                            {
+                                file.WriteLine(bankNumber + "," + (currentDepo - convertedMoney) + "," + dateTime.DayOfYear + "," + dateTime.Year);
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new ApplicationException("oh nooooo!: ", ex);
+                        }
+                    }
+
+                    Console.WriteLine("Successful\nPress Enter To Continue...");
+                    Console.ReadLine();
+
+
+                }
+
+
+
+            }
+            Console.Clear();
+
+
+
+
+
+
+
+        }
+
 
     }
 }
