@@ -2786,10 +2786,10 @@ namespace Simple_Banking_Program
         {
             Console.Clear();
             DateTime dateTime = DateTime.Now;
-            int currentRow = 3;
+            int currentRow = 2;
             bool isEntered;
 
-            int amountOfOptions = 4;
+            int amountOfOptions = 3;
             bool isExit = false;
             int currentBalance;
             checkBankRecord(bankNumber, out currentBalance);
@@ -2808,12 +2808,12 @@ namespace Simple_Banking_Program
 
             Console.ForegroundColor = ConsoleColor.Black;
             Console.BackgroundColor = ConsoleColor.DarkBlue;
-            Console.WriteLine("take a loan");
+            Console.WriteLine("Take a Loan");
             Console.ForegroundColor = ConsoleColor.Gray;
             Console.BackgroundColor = ConsoleColor.Black;
 
-            Console.WriteLine("      pay debt");
-            Console.WriteLine("      Take a loan from bank");
+            Console.WriteLine("      Pay Your Debts");
+            
 
             Console.ForegroundColor = ConsoleColor.Magenta;
             Console.WriteLine("      Back<-");
@@ -2832,7 +2832,7 @@ namespace Simple_Banking_Program
                 checkBankRecord(bankNumber, out currentBalance);
                 switch (currentRow)
                 {
-                    case 3:
+                    case 2:
 
                         if (isEntered)
                         {
@@ -2851,44 +2851,12 @@ namespace Simple_Banking_Program
 
                         Console.ForegroundColor = ConsoleColor.Black;
                         Console.BackgroundColor = ConsoleColor.DarkBlue;
-                        Console.WriteLine("take a loan");
+                        Console.WriteLine("Take a Loan");
                         Console.ForegroundColor = ConsoleColor.Gray;
                         Console.BackgroundColor = ConsoleColor.Black;
 
-                        Console.WriteLine("      pay debt");
-                        Console.WriteLine("      WIP");
-
-                        Console.ForegroundColor = ConsoleColor.Magenta;
-                        Console.WriteLine("      Back<-");
-                        Console.ForegroundColor = ConsoleColor.Gray;
-
-                        break;
-
-                    case 2:
-                        if (isEntered)
-                        {
-                            //Console.WriteLine("withdraw money...");
-                            //Console.ReadLine();
-                            payLoan(bankNumber);
-                        }
-
-                        Console.WriteLine("Current day of the year: " + dateTime.DayOfYear + " | Current year: " + dateTime.Year + "| Current Balance in Your Account is: " + currentBalance + "$");
-                        Console.WriteLine("      take a loan");
-                        Console.ForegroundColor = ConsoleColor.DarkBlue;
-                        Console.BackgroundColor = ConsoleColor.Gray;
-
-                        Console.Write(" [ ] ");
-
-                        Console.BackgroundColor = ConsoleColor.Black;
-                        Console.Write(" ");
-                        Console.ForegroundColor = ConsoleColor.Black;
-                        Console.BackgroundColor = ConsoleColor.DarkBlue;
-                        Console.WriteLine("pay debt");
-
-                        Console.ForegroundColor = ConsoleColor.Gray;
-                        Console.BackgroundColor = ConsoleColor.Black;
-
-                        Console.WriteLine("      WIP");
+                        Console.WriteLine("      Pay Your Debts");
+                        
 
                         Console.ForegroundColor = ConsoleColor.Magenta;
                         Console.WriteLine("      Back<-");
@@ -2899,13 +2867,13 @@ namespace Simple_Banking_Program
                     case 1:
                         if (isEntered)
                         {
-                            Console.WriteLine("...WorkInProgress...");
-                            Console.ReadLine();
-
+                            //Console.WriteLine("withdraw money...");
+                            //Console.ReadLine();
+                            payLoan(bankNumber);
                         }
+
                         Console.WriteLine("Current day of the year: " + dateTime.DayOfYear + " | Current year: " + dateTime.Year + "| Current Balance in Your Account is: " + currentBalance + "$");
-                        Console.WriteLine("      take a loan");
-                        Console.WriteLine("      pay debt");
+                        Console.WriteLine("      Take a Loan");
                         Console.ForegroundColor = ConsoleColor.DarkBlue;
                         Console.BackgroundColor = ConsoleColor.Gray;
 
@@ -2915,19 +2883,20 @@ namespace Simple_Banking_Program
                         Console.Write(" ");
                         Console.ForegroundColor = ConsoleColor.Black;
                         Console.BackgroundColor = ConsoleColor.DarkBlue;
-                        Console.WriteLine("WIP");
+                        Console.WriteLine("Pay Your Debts");
 
                         Console.ForegroundColor = ConsoleColor.Gray;
                         Console.BackgroundColor = ConsoleColor.Black;
 
+                        
 
                         Console.ForegroundColor = ConsoleColor.Magenta;
                         Console.WriteLine("      Back<-");
                         Console.ForegroundColor = ConsoleColor.Gray;
 
-
-
                         break;
+
+                    
 
 
                     case 0:
@@ -2943,9 +2912,9 @@ namespace Simple_Banking_Program
                         {
 
                             Console.WriteLine("Current day of the year: " + dateTime.DayOfYear + " | Current year: " + dateTime.Year + "| Current Balance in Your Account is: " + currentBalance + "$");
-                            Console.WriteLine("      take a loan");
-                            Console.WriteLine("      pay debt");
-                            Console.WriteLine("      WIP");
+                            Console.WriteLine("      Take a Loan");
+                            Console.WriteLine("      Pay Your Debts");
+                            
                             Console.ForegroundColor = ConsoleColor.DarkBlue;
                             Console.BackgroundColor = ConsoleColor.Gray;
 
