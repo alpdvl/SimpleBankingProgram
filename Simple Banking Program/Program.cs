@@ -1655,8 +1655,8 @@ namespace Simple_Banking_Program
                     //Console.ReadKey();
                     if (eachPlace[0].Equals(bankNumber))
                     {
-                        Console.WriteLine("if:" + eachPlace[0]);
-                        Console.ReadKey();
+                        //Console.WriteLine("if:" + eachPlace[0]);
+                        //Console.ReadKey();
 
                         if (!isEdited)
                         {
@@ -1683,8 +1683,8 @@ namespace Simple_Banking_Program
                 File.Delete(filepath);
 
                 File.Move(tempFile, filepath);
-                Console.WriteLine("Done!");
-                Console.ReadKey();
+                //Console.WriteLine("Done!");
+                //Console.ReadKey();
 
 
 
@@ -2225,6 +2225,7 @@ namespace Simple_Banking_Program
             {
                 folder = @"loanManaging";
                 path = folder + "\\" + bankNumber + ".txt";
+                isLoan = false;
 
             }
 
@@ -2629,6 +2630,7 @@ namespace Simple_Banking_Program
 
             while (convertedMoney <= currentDepo && !exitLoop)
             {
+                convertedMoney = 0;
                 int day0;
                 int year0;
 
@@ -2642,6 +2644,55 @@ namespace Simple_Banking_Program
                 //year0 checker
                 checkInterestDepo(bankNumber, out year0, 3, true);
                 calculateInterest(day0, year0, dateTime.DayOfYear, dateTime.Year, ref currentDepo, true);
+
+
+
+
+
+                // updating the file
+
+                /////
+
+                
+                bool isExists = false;
+                if (Directory.Exists(folder))
+                {
+                    //Console.WriteLine("It already exists");
+
+                    isExists = true;
+                }
+                else
+                {
+                    Directory.CreateDirectory(folder);
+                    //Console.WriteLine("Created the folder!");
+                    isExists = true;
+                }
+                
+
+                if (isExists)
+                {
+                    //calculateInterest(day0, year0, dateTime.DayOfYear, dateTime.Year, ref currentDepo);
+                    File.Delete(path);
+                    //Directory.CreateDirectory(folder);
+                    try
+                    {
+                        using (System.IO.StreamWriter file = new System.IO.StreamWriter(path, true))
+                        {
+                            file.WriteLine(bankNumber + "," + (currentDepo - convertedMoney) + "," + dateTime.DayOfYear + "," + dateTime.Year);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        throw new ApplicationException("oh nooooo!: ", ex);
+                    }
+                }
+
+
+                ////
+
+
+
+
                 Console.WriteLine("| Current Balance in Your loan ACCOUNT is: " + "-" + currentDepo + "$");
                 Console.WriteLine("Current daily interest rate is:%0.12\nEnter the amount which you want to pay: ");
                 Console.WriteLine("Enter -13 to exit from this page...");
@@ -2673,7 +2724,7 @@ namespace Simple_Banking_Program
                 {
                     currentBalance = currentBalance - convertedMoney;
                     editBankRecord(bankNumber, Convert.ToString(currentBalance), "test2.txt");
-                    bool isExists = false;
+                    isExists = false;
                     if (Directory.Exists(folder))
                     {
                         //Console.WriteLine("It already exists");
