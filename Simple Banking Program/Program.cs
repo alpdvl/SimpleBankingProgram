@@ -1186,6 +1186,7 @@ namespace Simple_Banking_Program
 
         static void transferingPage(int currentRow, string bankNumber)
         {
+
             string folder = @"transactions";
             string textFile = "";
             bool isDone = false;
@@ -1320,6 +1321,7 @@ namespace Simple_Banking_Program
                     }
                     else if (currentRow == 2)
                     {
+                        // currently doesnt do anything 
                         Console.WriteLine("Enter ur password...");
                         dataHolder[2] = Console.ReadLine();
                         checkedEntries++;
@@ -2013,8 +2015,7 @@ namespace Simple_Banking_Program
                     case 1:
                         if (isEntered)
                         {
-                            Console.WriteLine("take loan...");
-                            Console.ReadLine();
+                            LoanHandler(bankNumber);
 
                         }
                         Console.WriteLine("Current day of the year: " + dateTime.DayOfYear + " | Current year: " + dateTime.Year + "| Current Balance in Your Account is: " + currentBalance + "$");
@@ -2210,15 +2211,23 @@ namespace Simple_Banking_Program
 
         }
 
-        static void checkInterestDepo(string bankNumber, out int currentDepo, int searchTerm)
+        static void checkInterestDepo(string bankNumber, out int currentDepo, int searchTerm, bool isLoan = false)
         {
 
 
             int lastIndex;
             currentDepo = 0;
+
             string folder = @"interestManaging";
             string path;
             path = folder + "\\" + bankNumber + ".txt";
+            if (isLoan == true)
+            {
+                folder = @"loanManaging";
+                path = folder + "\\" + bankNumber + ".txt";
+
+            }
+
             //Console.WriteLine("current banknumber is:"+bankNumber);
             //Console.ReadLine();
 
@@ -2257,13 +2266,19 @@ namespace Simple_Banking_Program
             }
         }
 
-        static void calculateInterest(int day0, int year0, int day1, int year1, ref int currentDepo)
+        static void calculateInterest(int day0, int year0, int day1, int year1, ref int currentDepo, bool isLoan = false)
         {
             int length = 0;
 
 
             // daily
             double interestRate = 0.0011;
+            if (isLoan == true)
+            {
+                interestRate = 0.0012;
+
+            }
+
 
 
 
@@ -2433,6 +2448,496 @@ namespace Simple_Banking_Program
 
 
         }
+
+
+        static void takeLoan(string bankNumber)
+        {
+
+
+            int currentDepo;
+            bool exitLoop = false;
+            string amountOfMoney = "ERROR";
+            string folder = @"loanManaging";
+            string path;
+            int currentBalance;
+            string textFile;
+            checkBankRecord(bankNumber, out currentBalance);
+
+            path = folder + "\\" + bankNumber + ".txt";
+            DateTime dateTime = DateTime.Now;
+
+
+
+
+
+            int convertedMoney = 0;
+            checkInterestDepo(bankNumber, out currentDepo, 1, true); // last parameter indicates that we're checking loan file
+
+            //Console.WriteLine("depo:" + currentDepo);
+            //Console.ReadLine();
+
+            while (convertedMoney <= currentDepo && !exitLoop)
+            {
+                int day0;
+                int year0;
+
+
+                // money checker
+                checkInterestDepo(bankNumber, out currentDepo, 1, true);
+
+                //day 0 checker
+                checkInterestDepo(bankNumber, out day0, 2, true);
+
+                //year0 checker
+                checkInterestDepo(bankNumber, out year0, 3, true);
+                calculateInterest(day0, year0, dateTime.DayOfYear, dateTime.Year, ref currentDepo, true);
+                Console.WriteLine("| Current Balance in Your loan ACCOUNT is: " + "-" + currentDepo + "$");
+                Console.WriteLine("Current daily interest rate is:%0.12\nEnter the amount which you want to take as a loan: ");
+                Console.WriteLine("Enter -13 to exit from this page...");
+                amountOfMoney = Console.ReadLine();
+
+
+                convertedMoney = Convert.ToInt32(amountOfMoney);
+
+
+
+                // if users gonna have limit to taking loan it will be here
+                /*
+                if (convertedMoney > currentDepo)
+                {
+                    convertedMoney = 0;
+                    Console.WriteLine("You cant pay more than ur debt!");
+                    continue;
+                }
+                */
+
+
+                //currentDepo = currentDepo + convertedMoney;
+                //amountOfMoney = Convert.ToString(currentDepo);
+
+
+
+
+
+                if (convertedMoney == -13)
+                {
+                    exitLoop = true;
+                }
+                else
+                {
+                    currentBalance = currentBalance + convertedMoney;
+                    editBankRecord(bankNumber, Convert.ToString(currentBalance), "test2.txt");
+                    bool isExists = false;
+                    if (Directory.Exists(folder))
+                    {
+                        //Console.WriteLine("It already exists");
+
+                        isExists = true;
+                    }
+                    else
+                    {
+                        Directory.CreateDirectory(folder);
+                        //Console.WriteLine("Created the folder!");
+                        isExists = true;
+                    }
+                    string pastOfInterest = "| " + bankNumber + "(YOU) " + " <- received <- " + convertedMoney + "$ from ur debt account";
+                    textFile = bankNumber + ".txt";
+                    string folderOfPast = @"transactions";
+                    pastTransactionWriter(pastOfInterest, folderOfPast, textFile);
+
+                    if (isExists)
+                    {
+                        //calculateInterest(day0, year0, dateTime.DayOfYear, dateTime.Year, ref currentDepo);
+                        File.Delete(path);
+                        //Directory.CreateDirectory(folder);
+                        try
+                        {
+                            using (System.IO.StreamWriter file = new System.IO.StreamWriter(path, true))
+                            {
+                                file.WriteLine(bankNumber + "," + (currentDepo + convertedMoney) + "," + dateTime.DayOfYear + "," + dateTime.Year);
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new ApplicationException("oh nooooo!: ", ex);
+                        }
+                    }
+
+                    Console.WriteLine("Successful\nPress Enter To Continue...");
+                    Console.ReadLine();
+
+
+                }
+
+
+
+            }
+            Console.Clear();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        }
+
+
+        static void payLoan(string bankNumber)
+        {
+
+
+
+
+
+
+
+            int currentDepo;
+            bool exitLoop = false;
+            string amountOfMoney = "ERROR";
+            string folder = @"loanManaging";
+            string path;
+            int currentBalance;
+            string textFile;
+            checkBankRecord(bankNumber, out currentBalance);
+
+            path = folder + "\\" + bankNumber + ".txt";
+            DateTime dateTime = DateTime.Now;
+
+
+
+
+
+            int convertedMoney = 0;
+            checkInterestDepo(bankNumber, out currentDepo, 1, true); // we're actually checking loan depo, the last parameter indicates this 
+
+            //Console.WriteLine("depo:" + currentDepo);
+            //Console.ReadLine();
+
+            while (convertedMoney <= currentDepo && !exitLoop)
+            {
+                int day0;
+                int year0;
+
+
+                // money checker
+                checkInterestDepo(bankNumber, out currentDepo, 1, true);
+
+                //day 0 checker
+                checkInterestDepo(bankNumber, out day0, 2, true);
+
+                //year0 checker
+                checkInterestDepo(bankNumber, out year0, 3, true);
+                calculateInterest(day0, year0, dateTime.DayOfYear, dateTime.Year, ref currentDepo, true);
+                Console.WriteLine("| Current Balance in Your loan ACCOUNT is: " + "-" + currentDepo + "$");
+                Console.WriteLine("Current daily interest rate is:%0.12\nEnter the amount which you want to pay: ");
+                Console.WriteLine("Enter -13 to exit from this page...");
+                amountOfMoney = Console.ReadLine();
+
+
+                convertedMoney = Convert.ToInt32(amountOfMoney);
+
+                if (convertedMoney > currentDepo)
+                {
+                    convertedMoney = 0;
+                    Console.WriteLine("You cant pay more than ur debt!");
+                    continue;
+                }
+
+
+                //currentDepo = currentDepo + convertedMoney;
+                //amountOfMoney = Convert.ToString(currentDepo);
+
+
+
+
+
+                if (convertedMoney == -13)
+                {
+                    exitLoop = true;
+                }
+                else
+                {
+                    currentBalance = currentBalance - convertedMoney;
+                    editBankRecord(bankNumber, Convert.ToString(currentBalance), "test2.txt");
+                    bool isExists = false;
+                    if (Directory.Exists(folder))
+                    {
+                        //Console.WriteLine("It already exists");
+
+                        isExists = true;
+                    }
+                    else
+                    {
+                        Directory.CreateDirectory(folder);
+                        //Console.WriteLine("Created the folder!");
+                        isExists = true;
+                    }
+                    string pastOfInterest = "| " + bankNumber + "(YOU) " + " -> paid -> " + convertedMoney + "$ to ur debt account";
+                    textFile = bankNumber + ".txt";
+                    string folderOfPast = @"transactions";
+                    pastTransactionWriter(pastOfInterest, folderOfPast, textFile);
+
+                    if (isExists)
+                    {
+                        //calculateInterest(day0, year0, dateTime.DayOfYear, dateTime.Year, ref currentDepo);
+                        File.Delete(path);
+                        //Directory.CreateDirectory(folder);
+                        try
+                        {
+                            using (System.IO.StreamWriter file = new System.IO.StreamWriter(path, true))
+                            {
+                                file.WriteLine(bankNumber + "," + (currentDepo - convertedMoney) + "," + dateTime.DayOfYear + "," + dateTime.Year);
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new ApplicationException("oh nooooo!: ", ex);
+                        }
+                    }
+
+                    Console.WriteLine("Successful\nPress Enter To Continue...");
+                    Console.ReadLine();
+
+
+                }
+
+
+
+            }
+            Console.Clear();
+
+
+
+
+
+
+
+
+
+        }
+
+
+        static void LoanHandler(string bankNumber)
+        {
+            Console.Clear();
+            DateTime dateTime = DateTime.Now;
+            int currentRow = 3;
+            bool isEntered;
+
+            int amountOfOptions = 4;
+            bool isExit = false;
+            int currentBalance;
+            checkBankRecord(bankNumber, out currentBalance);
+
+            // start screen
+            Console.WriteLine("Current day of the year: " + dateTime.DayOfYear + " | Current year: " + dateTime.Year + "| Current Balance in Your Account is: " + currentBalance + "$");
+
+
+            Console.ForegroundColor = ConsoleColor.DarkBlue;
+            Console.BackgroundColor = ConsoleColor.Gray;
+
+            Console.Write(" [ ] ");
+
+            Console.BackgroundColor = ConsoleColor.Black;
+            Console.Write(" ");
+
+            Console.ForegroundColor = ConsoleColor.Black;
+            Console.BackgroundColor = ConsoleColor.DarkBlue;
+            Console.WriteLine("take a loan");
+            Console.ForegroundColor = ConsoleColor.Gray;
+            Console.BackgroundColor = ConsoleColor.Black;
+
+            Console.WriteLine("      pay debt");
+            Console.WriteLine("      Take a loan from bank");
+
+            Console.ForegroundColor = ConsoleColor.Magenta;
+            Console.WriteLine("      Back<-");
+            Console.ForegroundColor = ConsoleColor.Gray;
+
+
+            while (!isExit)
+            {
+                //Console.WriteLine(currentRow);
+                int currentDirection = bankPageInputs(currentRow);
+                currentRow = rowCalc(currentRow, amountOfOptions, currentDirection, out isEntered);
+                Console.Clear();
+                //Console.WriteLine(currentRow);
+
+
+                checkBankRecord(bankNumber, out currentBalance);
+                switch (currentRow)
+                {
+                    case 3:
+
+                        if (isEntered)
+                        {
+                            //Console.WriteLine("Depo money...");
+                            takeLoan(bankNumber);
+                        }
+
+                        Console.WriteLine("Current day of the year: " + dateTime.DayOfYear + " | Current year: " + dateTime.Year + "| Current Balance in Your Account is: " + currentBalance + "$");
+                        Console.ForegroundColor = ConsoleColor.DarkBlue;
+                        Console.BackgroundColor = ConsoleColor.Gray;
+
+                        Console.Write(" [ ] ");
+
+                        Console.BackgroundColor = ConsoleColor.Black;
+                        Console.Write(" ");
+
+                        Console.ForegroundColor = ConsoleColor.Black;
+                        Console.BackgroundColor = ConsoleColor.DarkBlue;
+                        Console.WriteLine("take a loan");
+                        Console.ForegroundColor = ConsoleColor.Gray;
+                        Console.BackgroundColor = ConsoleColor.Black;
+
+                        Console.WriteLine("      pay debt");
+                        Console.WriteLine("      WIP");
+
+                        Console.ForegroundColor = ConsoleColor.Magenta;
+                        Console.WriteLine("      Back<-");
+                        Console.ForegroundColor = ConsoleColor.Gray;
+
+                        break;
+
+                    case 2:
+                        if (isEntered)
+                        {
+                            //Console.WriteLine("withdraw money...");
+                            //Console.ReadLine();
+                            payLoan(bankNumber);
+                        }
+
+                        Console.WriteLine("Current day of the year: " + dateTime.DayOfYear + " | Current year: " + dateTime.Year + "| Current Balance in Your Account is: " + currentBalance + "$");
+                        Console.WriteLine("      take a loan");
+                        Console.ForegroundColor = ConsoleColor.DarkBlue;
+                        Console.BackgroundColor = ConsoleColor.Gray;
+
+                        Console.Write(" [ ] ");
+
+                        Console.BackgroundColor = ConsoleColor.Black;
+                        Console.Write(" ");
+                        Console.ForegroundColor = ConsoleColor.Black;
+                        Console.BackgroundColor = ConsoleColor.DarkBlue;
+                        Console.WriteLine("pay debt");
+
+                        Console.ForegroundColor = ConsoleColor.Gray;
+                        Console.BackgroundColor = ConsoleColor.Black;
+
+                        Console.WriteLine("      WIP");
+
+                        Console.ForegroundColor = ConsoleColor.Magenta;
+                        Console.WriteLine("      Back<-");
+                        Console.ForegroundColor = ConsoleColor.Gray;
+
+                        break;
+
+                    case 1:
+                        if (isEntered)
+                        {
+                            Console.WriteLine("...WorkInProgress...");
+                            Console.ReadLine();
+
+                        }
+                        Console.WriteLine("Current day of the year: " + dateTime.DayOfYear + " | Current year: " + dateTime.Year + "| Current Balance in Your Account is: " + currentBalance + "$");
+                        Console.WriteLine("      take a loan");
+                        Console.WriteLine("      pay debt");
+                        Console.ForegroundColor = ConsoleColor.DarkBlue;
+                        Console.BackgroundColor = ConsoleColor.Gray;
+
+                        Console.Write(" [ ] ");
+
+                        Console.BackgroundColor = ConsoleColor.Black;
+                        Console.Write(" ");
+                        Console.ForegroundColor = ConsoleColor.Black;
+                        Console.BackgroundColor = ConsoleColor.DarkBlue;
+                        Console.WriteLine("WIP");
+
+                        Console.ForegroundColor = ConsoleColor.Gray;
+                        Console.BackgroundColor = ConsoleColor.Black;
+
+
+                        Console.ForegroundColor = ConsoleColor.Magenta;
+                        Console.WriteLine("      Back<-");
+                        Console.ForegroundColor = ConsoleColor.Gray;
+
+
+
+                        break;
+
+
+                    case 0:
+                        if (isEntered)
+                        {
+                            Console.WriteLine("Press Enter To Continue...");
+                            Console.ReadLine();
+                            isExit = true;
+                            Console.Clear();
+                        }
+
+                        else
+                        {
+
+                            Console.WriteLine("Current day of the year: " + dateTime.DayOfYear + " | Current year: " + dateTime.Year + "| Current Balance in Your Account is: " + currentBalance + "$");
+                            Console.WriteLine("      take a loan");
+                            Console.WriteLine("      pay debt");
+                            Console.WriteLine("      WIP");
+                            Console.ForegroundColor = ConsoleColor.DarkBlue;
+                            Console.BackgroundColor = ConsoleColor.Gray;
+
+                            Console.Write(" [ ] ");
+
+                            Console.BackgroundColor = ConsoleColor.Black;
+                            Console.Write(" ");
+                            Console.ForegroundColor = ConsoleColor.Black;
+                            Console.BackgroundColor = ConsoleColor.DarkBlue;
+                            Console.WriteLine("Back<-");
+
+                            Console.ForegroundColor = ConsoleColor.Gray;
+                            Console.BackgroundColor = ConsoleColor.Black;
+                        }
+
+
+
+
+
+
+
+
+                        break;
+
+
+
+
+
+
+                }
+
+            }
+
+
+
+
+
+
+
+        }
+
+
+
 
 
     }
