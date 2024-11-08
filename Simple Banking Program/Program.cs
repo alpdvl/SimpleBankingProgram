@@ -378,7 +378,7 @@ namespace Simple_Banking_Program
                         currentPage = (currentRow * Convert.ToInt32(currentPageMultiplier)) + 1;
                         currentPageMultiplier = Math.Pow(10, currentPage); // tried to give each page its own multiplier that way
                                                                            // i can easily access them via arithmetic operations
-                                                                           // sadly, seems like it didnt work that well
+                                                                           // sadly, it seems like it didnt work that well
 
                         //Console.WriteLine("#####"+currentPageMultiplier);
                         //Console.ReadLine();
@@ -520,13 +520,13 @@ namespace Simple_Banking_Program
                     }
                     else if (checkedEntries >= 3)
                     {
-                        Console.WriteLine("There was a mistake your checked entries is:" + checkedEntries);
+                        Console.WriteLine("There was a mistake, your checked entries is:" + checkedEntries);
                         Console.ReadLine();
                         checkedEntries = 0;
                     }
                     else
                     {
-                        Console.WriteLine("There was probably a mistake!: checkedentries:" + checkedEntries);
+                        Console.WriteLine("There was (probably) a mistake!: checkedentries:" + checkedEntries);
                         Console.ReadLine();
                         checkedEntries = 0;
                     }
