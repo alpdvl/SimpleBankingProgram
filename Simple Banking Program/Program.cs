@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Net.Http.Headers;
 using System.Reflection.Emit;
+using System.Security.Policy;
 using System.Security.Principal;
 using System.Text;
 using System.Threading;
@@ -925,6 +926,8 @@ namespace Simple_Banking_Program
 
 
             //// start screen!
+            ///
+            infoPrinter(bankNumber);
             Console.ForegroundColor = ConsoleColor.DarkBlue;
             Console.BackgroundColor = ConsoleColor.Gray;
 
@@ -981,6 +984,7 @@ namespace Simple_Banking_Program
 
 
                         Console.Clear();
+                        infoPrinter(bankNumber);
                         Console.ForegroundColor = ConsoleColor.DarkBlue;
                         Console.BackgroundColor = ConsoleColor.Gray;
 
@@ -1014,6 +1018,7 @@ namespace Simple_Banking_Program
                             checkAndPrintPast(bankNumber);
                         }
                         Console.Clear();
+                        infoPrinter(bankNumber);
                         Console.WriteLine("      Money Transactions");
 
                         Console.ForegroundColor = ConsoleColor.DarkBlue;
@@ -1045,6 +1050,7 @@ namespace Simple_Banking_Program
                             InterestHandler(bankNumber);
                         }
                         Console.Clear();
+                        infoPrinter(bankNumber);
                         Console.WriteLine("      Money Transactions");
                         Console.WriteLine("      Past Transactions");
 
@@ -1081,10 +1087,11 @@ namespace Simple_Banking_Program
                         if (isEntered)
                         {
                             Console.Clear();
-                            Console.WriteLine("ARE YOU SURE THAT YOU WANT LOGOUT FROM YOUR ACCOUNT?\n(y/n)");
+                            Console.WriteLine("ARE YOU SURE THAT YOU WANT TO LOGOUT FROM YOUR ACCOUNT?\n(y/n)");
                             key = Console.ReadKey().Key;
                         }
                         Console.Clear();
+                        infoPrinter(bankNumber);
                         Console.WriteLine("      Money Transactions");
                         Console.WriteLine("      Past Transactions");
 
@@ -1173,6 +1180,8 @@ namespace Simple_Banking_Program
 
 
             // i didnt want to create new dynamic menu printer function, code will get longer but this way its easier to handle exceptions/bugs
+            infoPrinter(bankNumber);
+
             Console.ForegroundColor = ConsoleColor.DarkBlue;
             Console.BackgroundColor = ConsoleColor.Gray;
 
@@ -1249,7 +1258,7 @@ namespace Simple_Banking_Program
                         {
                             // gonna add exit shortcut/key 
 
-
+                            infoPrinter(bankNumber);
                             Console.WriteLine("Enter the amount you want to send...");
                             dataHolder[1] = Console.ReadLine();
 
@@ -1366,7 +1375,7 @@ namespace Simple_Banking_Program
                 switch (currentRow)
                 {
                     case 4:
-
+                        infoPrinter(bankNumber);
                         Console.ForegroundColor = ConsoleColor.DarkBlue;
                         Console.BackgroundColor = ConsoleColor.Gray;
 
@@ -1395,6 +1404,7 @@ namespace Simple_Banking_Program
                         break;
 
                     case 3:
+                        infoPrinter(bankNumber);
                         Console.WriteLine("      Enter the receiver account's Bank Number");
 
                         Console.ForegroundColor = ConsoleColor.DarkBlue;
@@ -1423,6 +1433,7 @@ namespace Simple_Banking_Program
                         break;
 
                     case 2:
+                        infoPrinter(bankNumber);
                         Console.WriteLine("      Enter the receiver account's Bank Number");
                         Console.WriteLine("      Enter the amount which you want to send");
 
@@ -1455,6 +1466,7 @@ namespace Simple_Banking_Program
 
 
                     case 1:
+                        infoPrinter(bankNumber);
                         Console.WriteLine("      Enter the receiver account's Bank Number");
                         Console.WriteLine("      Enter the amount which you want to send");
                         Console.WriteLine("      Enter your password");
@@ -1483,6 +1495,7 @@ namespace Simple_Banking_Program
                         break;
 
                     case 0:
+                        infoPrinter(bankNumber);
 
                         Console.WriteLine("      Enter the receiver account's Bank Number");
                         Console.WriteLine("      Enter the amount which you want to send");
@@ -1861,7 +1874,9 @@ namespace Simple_Banking_Program
             checkBankRecord(bankNumber, out currentBalance);
 
             // start screen
-            Console.WriteLine("Current day of the year: " + dateTime.DayOfYear + " | Current year: " + dateTime.Year + "| Current Balance in Your Account is: " + currentBalance + "$");
+
+            infoPrinter(bankNumber);
+            //Console.WriteLine("Current day of the year: " + dateTime.DayOfYear + " | Current year: " + dateTime.Year + "| Current Balance in Your Account is: " + currentBalance + "$");
 
 
             Console.ForegroundColor = ConsoleColor.DarkBlue;
@@ -1906,7 +1921,8 @@ namespace Simple_Banking_Program
                             DepoMoney(bankNumber);
                         }
 
-                        Console.WriteLine("Current day of the year: " + dateTime.DayOfYear + " | Current year: " + dateTime.Year + "| Current Balance in Your Account is: " + currentBalance + "$");
+                        infoPrinter(bankNumber);
+                        //Console.WriteLine("Current day of the year: " + dateTime.DayOfYear + " | Current year: " + dateTime.Year + "| Current Balance in Your Account is: " + currentBalance + "$");
                         Console.ForegroundColor = ConsoleColor.DarkBlue;
                         Console.BackgroundColor = ConsoleColor.Gray;
 
@@ -1938,7 +1954,8 @@ namespace Simple_Banking_Program
                             WithdrawMoney(bankNumber);
                         }
 
-                        Console.WriteLine("Current day of the year: " + dateTime.DayOfYear + " | Current year: " + dateTime.Year + "| Current Balance in Your Account is: " + currentBalance + "$");
+                        infoPrinter(bankNumber);
+                        //Console.WriteLine("Current day of the year: " + dateTime.DayOfYear + " | Current year: " + dateTime.Year + "| Current Balance in Your Account is: " + currentBalance + "$");
                         Console.WriteLine("      Deposit money to ur interest account");
                         Console.ForegroundColor = ConsoleColor.DarkBlue;
                         Console.BackgroundColor = ConsoleColor.Gray;
@@ -1968,7 +1985,8 @@ namespace Simple_Banking_Program
                             LoanHandler(bankNumber);
 
                         }
-                        Console.WriteLine("Current day of the year: " + dateTime.DayOfYear + " | Current year: " + dateTime.Year + "| Current Balance in Your Account is: " + currentBalance + "$");
+                        infoPrinter(bankNumber);
+                        //Console.WriteLine("Current day of the year: " + dateTime.DayOfYear + " | Current year: " + dateTime.Year + "| Current Balance in Your Account is: " + currentBalance + "$");
                         Console.WriteLine("      Deposit money to ur interest account");
                         Console.WriteLine("      Withdraw money from ur interest account");
                         Console.ForegroundColor = ConsoleColor.DarkBlue;
@@ -2002,8 +2020,8 @@ namespace Simple_Banking_Program
                             Console.ReadLine();
                             isExit = true;
                         }
-
-                        Console.WriteLine("Current day of the year: " + dateTime.DayOfYear + " | Current year: " + dateTime.Year + "| Current Balance in Your Account is: " + currentBalance + "$");
+                        infoPrinter(bankNumber);
+                        //Console.WriteLine("Current day of the year: " + dateTime.DayOfYear + " | Current year: " + dateTime.Year + "| Current Balance in Your Account is: " + currentBalance + "$");
                         Console.WriteLine("      Deposit money to ur interest account");
                         Console.WriteLine("      Withdraw money from ur interest account");
                         Console.WriteLine("      Take a loan from bank");
@@ -2065,7 +2083,10 @@ namespace Simple_Banking_Program
 
             while (convertedMoney < currentBalance && !exitLoop)
             {
-                Console.WriteLine("You cant deposit more than what you have in ur account! | Current Balance in Your Account is: " + currentBalance + "$");
+                //Console.WriteLine("You cant deposit more than what you have in ur account! | Current Balance in Your Account is: " + currentBalance + "$");
+
+                Console.Clear();
+                infoPrinter(bankNumber);
                 Console.WriteLine("Current daily interest rate is:%0.11\nEnter the amount which you want to deposit to ur interest account: ");
                 Console.WriteLine("Enter -13 to exit from this page...");
 
@@ -2297,7 +2318,14 @@ namespace Simple_Banking_Program
                 //year0 checker
                 checkInterestDepo(bankNumber, out year0, 3);
                 calculateInterest(day0, year0, dateTime.DayOfYear, dateTime.Year, ref currentDepo);
-                Console.WriteLine("| Current Balance in Your INTEREST ACCOUNT is: " + currentDepo + "$");
+
+
+                Console.Clear();
+
+                infoPrinter(bankNumber);
+                //Console.WriteLine("| Current Balance in Your INTEREST ACCOUNT is: " + currentDepo + "$");
+                
+
                 Console.WriteLine("Current daily interest rate is:%0.11\nEnter the amount which you want to withdraw ur interest account: ");
                 Console.WriteLine("Enter -13 to exit from this page...");
 
@@ -2427,7 +2455,12 @@ namespace Simple_Banking_Program
                 //year0 checker
                 checkInterestDepo(bankNumber, out year0, 3, true);
                 calculateInterest(day0, year0, dateTime.DayOfYear, dateTime.Year, ref currentDepo, true);
-                Console.WriteLine("| Current Balance in Your loan ACCOUNT is: " + "-" + currentDepo + "$");
+                //Console.WriteLine("| Current Balance in Your loan ACCOUNT is: " + "-" + currentDepo + "$");
+
+                Console.Clear();
+
+                infoPrinter(bankNumber);
+
                 Console.WriteLine("Current daily interest rate is:%0.12\nEnter the amount which you want to take as a loan: ");
                 Console.WriteLine("Enter -13 to exit from this page...");
 
@@ -2603,7 +2636,10 @@ namespace Simple_Banking_Program
                 ////
 
 
-                Console.WriteLine("| Current Balance in Your loan ACCOUNT is: " + "-" + currentDepo + "$");
+                //Console.WriteLine("| Current Balance in Your loan ACCOUNT is: " + "-" + currentDepo + "$");
+                Console.Clear();
+                infoPrinter(bankNumber);
+
                 Console.WriteLine("Current daily interest rate is:%0.12\nEnter the amount which you want to pay: ");
                 Console.WriteLine("Enter -13 to exit from this page...");
 
@@ -2716,8 +2752,11 @@ namespace Simple_Banking_Program
             checkBankRecord(bankNumber, out currentBalance);
 
             // start screen
-            Console.WriteLine("Current day of the year: " + dateTime.DayOfYear + " | Current year: " + dateTime.Year + "| Current Balance in Your Account is: " + currentBalance + "$");
-            
+
+            infoPrinter(bankNumber);
+            //Console.WriteLine("Current day of the year: " + dateTime.DayOfYear + " | Current year: " + dateTime.Year + "| Current Balance in Your Account is: " + currentBalance + "$");
+            Console.Clear();
+            infoPrinter(bankNumber);
 
 
             Console.ForegroundColor = ConsoleColor.DarkBlue;
@@ -2761,8 +2800,8 @@ namespace Simple_Banking_Program
                             //Console.WriteLine("Depo money...");
                             takeLoan(bankNumber);
                         }
-
-                        Console.WriteLine("Current day of the year: " + dateTime.DayOfYear + " | Current year: " + dateTime.Year + "| Current Balance in Your Account is: " + currentBalance + "$");
+                        infoPrinter(bankNumber);
+                        //Console.WriteLine("Current day of the year: " + dateTime.DayOfYear + " | Current year: " + dateTime.Year + "| Current Balance in Your Account is: " + currentBalance + "$");
                         Console.ForegroundColor = ConsoleColor.DarkBlue;
                         Console.BackgroundColor = ConsoleColor.Gray;
 
@@ -2794,7 +2833,8 @@ namespace Simple_Banking_Program
                             payLoan(bankNumber);
                         }
 
-                        Console.WriteLine("Current day of the year: " + dateTime.DayOfYear + " | Current year: " + dateTime.Year + "| Current Balance in Your Account is: " + currentBalance + "$");
+                        infoPrinter(bankNumber);
+                        //Console.WriteLine("Current day of the year: " + dateTime.DayOfYear + " | Current year: " + dateTime.Year + "| Current Balance in Your Account is: " + currentBalance + "$");
                         Console.WriteLine("      Take a Loan");
                         Console.ForegroundColor = ConsoleColor.DarkBlue;
                         Console.BackgroundColor = ConsoleColor.Gray;
@@ -2832,8 +2872,8 @@ namespace Simple_Banking_Program
 
                         else
                         {
-
-                            Console.WriteLine("Current day of the year: " + dateTime.DayOfYear + " | Current year: " + dateTime.Year + "| Current Balance in Your Account is: " + currentBalance + "$");
+                            infoPrinter(bankNumber);
+                            //Console.WriteLine("Current day of the year: " + dateTime.DayOfYear + " | Current year: " + dateTime.Year + "| Current Balance in Your Account is: " + currentBalance + "$");
                             Console.WriteLine("      Take a Loan");
                             Console.WriteLine("      Pay Your Debts");
                             
@@ -2872,19 +2912,145 @@ namespace Simple_Banking_Program
         static void infoPrinter(string bankNumber)
         {
             int currentBalance;
+            int currentDepo;
+            int currentDepoOfInterest;
             DateTime dateTime = DateTime.Now;
             checkBankRecord(bankNumber, out currentBalance);
-
-            Console.WriteLine("Current day of the year: " + dateTime.DayOfYear +
-                " | Current year: " + dateTime.Year + 
-                "| Current Balance in Your Account is: " + currentBalance + "$"
-                  );
+            int day0;
+            int year0;
 
 
 
+            //__________ loan balance checker______________________________________________________________
+            // money checker
+            checkInterestDepo(bankNumber, out currentDepo, 1, true);
+
+            //day 0 checker
+            checkInterestDepo(bankNumber, out day0, 2, true);
+
+            //year0 checker
+            checkInterestDepo(bankNumber, out year0, 3, true);
+            calculateInterest(day0, year0, dateTime.DayOfYear, dateTime.Year, ref currentDepo, true);
+            //_____________________________________________________________________________________________
+
+
+            //__________ Interest Account Balance checker_________________________________________________
+            
+            checkInterestDepo(bankNumber, out currentDepoOfInterest, 1);
+
+            calculateInterest(day0, year0, dateTime.DayOfYear, dateTime.Year, ref currentDepoOfInterest);
+
+            
+            string userNameHolder;
+            
+
+            getUsername(bankNumber,out userNameHolder,0);
 
 
 
+            Console.Write("Current User: ");
+            Console.ForegroundColor = ConsoleColor.DarkMagenta;
+            Console.WriteLine(userNameHolder);
+            Console.ForegroundColor= ConsoleColor.Gray;
+            
+
+            Console.WriteLine("______________________________________________");
+            
+            Console.Write("| Current day of the year: ");
+
+            Console.ForegroundColor = ConsoleColor.Blue;
+            Console.WriteLine(dateTime.DayOfYear);
+            Console.ForegroundColor = ConsoleColor.Gray;
+            
+
+
+
+
+            Console.Write("| Current year: ");
+            Console.ForegroundColor = ConsoleColor.Blue;
+            Console.WriteLine(dateTime.Year);
+            Console.ForegroundColor = ConsoleColor.Gray;
+
+            
+
+
+            
+            Console.Write("| Current Balance in Your Account is: ");
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.WriteLine("$"+currentBalance);
+            Console.ForegroundColor = ConsoleColor.Gray;
+            
+
+
+
+            Console.Write("| Current balance in interest account: ");
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.WriteLine("$"+currentDepoOfInterest);
+            Console.ForegroundColor = ConsoleColor.Gray;
+            
+
+
+
+            
+            Console.Write("| Current debt: ");
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine("$"+currentDepo);
+            Console.ForegroundColor = ConsoleColor.Gray;
+            Console.WriteLine("______________________________________________");
+            
+
+
+
+
+
+
+
+        }
+
+        static void getUsername(string bankNumber, out string username, int searchTerm)
+        {
+
+
+            int lastIndex;
+            
+
+            
+            string path;
+            path ="testing.txt";
+            
+
+            //Console.WriteLine("current banknumber is:"+bankNumber);
+            //Console.ReadLine();
+
+            bool isThere = File.Exists(path);
+
+
+            if (isThere)
+            {
+
+                try
+                {
+                    string[] everyline = System.IO.File.ReadAllLines(path);
+
+
+                    lastIndex = everyline.Length - 1;
+
+                    string[] eachPlace = everyline[lastIndex].Split(',');
+                   username = eachPlace[searchTerm];
+
+
+
+                }
+                catch (Exception ex)
+                {
+
+                    throw new ApplicationException("Hell nooo!: ", ex);
+                }
+            }
+            else
+            {
+                username = "ERROR!";
+            }
         }
 
 
