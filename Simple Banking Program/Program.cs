@@ -2717,6 +2717,7 @@ namespace Simple_Banking_Program
 
             // start screen
             Console.WriteLine("Current day of the year: " + dateTime.DayOfYear + " | Current year: " + dateTime.Year + "| Current Balance in Your Account is: " + currentBalance + "$");
+            
 
 
             Console.ForegroundColor = ConsoleColor.DarkBlue;
@@ -2863,6 +2864,30 @@ namespace Simple_Banking_Program
 
 
         }
+
+
+
+
+
+        static void infoPrinter(string bankNumber)
+        {
+            int currentBalance;
+            DateTime dateTime = DateTime.Now;
+            checkBankRecord(bankNumber, out currentBalance);
+
+            Console.WriteLine("Current day of the year: " + dateTime.DayOfYear +
+                " | Current year: " + dateTime.Year + 
+                "| Current Balance in Your Account is: " + currentBalance + "$"
+                  );
+
+
+
+
+
+
+        }
+
+
 
 
     }
