@@ -2623,7 +2623,18 @@ namespace Simple_Banking_Program
                 {
                     convertedMoney = 0;
                     Console.WriteLine("You cant pay more than ur debt!");
+                    Console.WriteLine("Your current debt is: $" + currentDepo + "\n Press Enter To Continue...");
+                    Console.ReadLine();
                     continue;
+                }
+                else if(convertedMoney>currentBalance)
+                {
+                    convertedMoney = 0;
+                    Console.WriteLine("You dont have enough balance for this transaction!");
+                    Console.WriteLine("Your current balance is: $" + currentBalance+"\n>Press Enter To Continue...");
+                    Console.ReadLine();
+                    continue;
+
                 }
 
 
