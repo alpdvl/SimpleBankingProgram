@@ -15,13 +15,8 @@ namespace Simple_Banking_Program
     internal class Program
     {
 
-
-
         static void Main(string[] args)
         {
-
-
-
 
 
             int currentPage = 0; // lets program know where it prints rn
@@ -385,8 +380,6 @@ namespace Simple_Banking_Program
                                                                            // i can easily access them via arithmetic operations
                                                                            // sadly, seems like it didnt work that well
 
-
-
                         //Console.WriteLine("#####"+currentPageMultiplier);
                         //Console.ReadLine();
                         Console.Clear();
@@ -471,8 +464,6 @@ namespace Simple_Banking_Program
                             Console.ReadLine();
                         }
                     } while (isCorrect);
-
-
 
 
 
@@ -817,9 +808,6 @@ namespace Simple_Banking_Program
 
 
 
-
-
-
         // reads values from files, i'll use this for checking usernames and making other important
         // logical parts of code
         public static string[] readRecord(string searchTerm, string filepath, int positionOfSearchTerm, out bool isExist, out int lineOfTerm)
@@ -870,8 +858,6 @@ namespace Simple_Banking_Program
         }
 
 
-
-
         public static void addRecord(string userName, string passWord, string phoneNumber, string bankNumber, string filepath)
         {
             try
@@ -902,7 +888,6 @@ namespace Simple_Banking_Program
                 temp[i] = rnd.Next(0, 9);
 
 
-
             }
 
             for (int i = 0; i < temp.Length; i++)
@@ -923,7 +908,6 @@ namespace Simple_Banking_Program
         // ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
         // ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
         // ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
-
 
 
         // i had to rewrite many functions into NEW functions because of the poor designing chooses
@@ -1105,9 +1089,6 @@ namespace Simple_Banking_Program
                         Console.WriteLine("      Past Transactions");
 
 
-
-
-
                         Console.WriteLine("      Interest Page");
                         Console.ForegroundColor = ConsoleColor.Gray;
                         Console.BackgroundColor = ConsoleColor.Black;
@@ -1138,17 +1119,9 @@ namespace Simple_Banking_Program
                 }
 
 
-
-
                 //transferingPage(currentRow, bankNumber);
                 //Console.WriteLine("Current Row Is: "+currentRow);
             }
-
-
-
-
-
-
 
 
 
@@ -1157,7 +1130,6 @@ namespace Simple_Banking_Program
 
         static int bankPageInputs(int currentDirection)
         {
-
 
 
             var key = Console.ReadKey().Key;
@@ -1235,9 +1207,6 @@ namespace Simple_Banking_Program
 
             {
 
-
-
-
                 int currentDirection = bankPageInputs(currentRow);
                 currentRow = rowCalc(currentRow, amountOfOptions, currentDirection, out isEntered);
                 Console.Clear();
@@ -1287,8 +1256,6 @@ namespace Simple_Banking_Program
 
                             if (isOnlyDigit(dataHolder[1]))
                             {
-
-
 
                                 pastTransactionSender = "| " + bankNumber + "(YOU) " + " -> sent -> " + dataHolder[1] + "$ to " + dataHolder[0];
                                 pastTransactionReceiver = "| " + dataHolder[0] + "(YOU) " + " <- received <- " + dataHolder[1] + "$ from " + bankNumber;
@@ -1342,8 +1309,6 @@ namespace Simple_Banking_Program
                                 editBankRecord(bankNumber, balanceText, "test2.txt");
 
 
-
-
                                 //receiver
                                 moneyToReceive = Convert.ToInt32(dataHolder[1]);
 
@@ -1373,9 +1338,6 @@ namespace Simple_Banking_Program
                             }
 
 
-
-
-
                         }
                         else
                         {
@@ -1398,8 +1360,6 @@ namespace Simple_Banking_Program
                         }
                     }
                 }
-
-
 
 
                 Console.Clear();
@@ -1490,11 +1450,7 @@ namespace Simple_Banking_Program
                         Console.ForegroundColor = ConsoleColor.Gray;
                         Console.BackgroundColor = ConsoleColor.Black;
 
-
-
                         break;
-
-
 
 
 
@@ -1522,9 +1478,6 @@ namespace Simple_Banking_Program
                         Console.WriteLine("      <-EXIT");
                         Console.ForegroundColor = ConsoleColor.Gray;
                         Console.BackgroundColor = ConsoleColor.Black;
-
-
-
 
 
                         break;
@@ -1558,8 +1511,6 @@ namespace Simple_Banking_Program
 
                     default: break;
                 }
-
-
 
 
 
@@ -1614,8 +1565,6 @@ namespace Simple_Banking_Program
 
 
         }
-
-
 
 
         public static void addBankRecord(string bankNumber, string amountOfMoney, string filepath)
@@ -2073,25 +2022,12 @@ namespace Simple_Banking_Program
                         Console.BackgroundColor = ConsoleColor.Black;
 
 
-
-
-
-
-
                         break;
-
-
-
-
 
 
                 }
 
             }
-
-
-
-
 
 
 
@@ -2214,11 +2150,6 @@ namespace Simple_Banking_Program
             Console.Clear();
 
 
-
-
-
-
-
         }
 
         static void checkInterestDepo(string bankNumber, out int currentDepo, int searchTerm, bool isLoan = false)
@@ -2260,10 +2191,6 @@ namespace Simple_Banking_Program
 
 
 
-
-
-
-
                 }
                 catch (Exception ex)
                 {
@@ -2291,15 +2218,10 @@ namespace Simple_Banking_Program
             }
 
 
-
-
-
             if (day0 > day1 && ((year1 - year0) == 1))
 
             {
                 length = 365 - day0 + day1;
-
-
 
 
 
@@ -2463,10 +2385,6 @@ namespace Simple_Banking_Program
 
 
 
-
-
-
-
         }
 
 
@@ -2485,8 +2403,6 @@ namespace Simple_Banking_Program
 
             path = folder + "\\" + bankNumber + ".txt";
             DateTime dateTime = DateTime.Now;
-
-
 
 
 
@@ -2524,8 +2440,6 @@ namespace Simple_Banking_Program
                 } while (!isOnlyDigit(amountOfMoney = Console.ReadLine()));
 
                 
-
-
                 convertedMoney = Convert.ToInt32(amountOfMoney);
 
 
@@ -2543,9 +2457,6 @@ namespace Simple_Banking_Program
 
                 //currentDepo = currentDepo + convertedMoney;
                 //amountOfMoney = Convert.ToString(currentDepo);
-
-
-
 
 
                 if (convertedMoney == -13)
@@ -2604,33 +2515,11 @@ namespace Simple_Banking_Program
             Console.Clear();
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
         }
 
 
         static void payLoan(string bankNumber)
         {
-
-
-
-
 
 
 
@@ -2645,9 +2534,6 @@ namespace Simple_Banking_Program
 
             path = folder + "\\" + bankNumber + ".txt";
             DateTime dateTime = DateTime.Now;
-
-
-
 
 
             int convertedMoney = 0;
@@ -2672,8 +2558,6 @@ namespace Simple_Banking_Program
                 //year0 checker
                 checkInterestDepo(bankNumber, out year0, 3, true);
                 calculateInterest(day0, year0, dateTime.DayOfYear, dateTime.Year, ref currentDepo, true);
-
-
 
 
 
@@ -2719,8 +2603,6 @@ namespace Simple_Banking_Program
                 ////
 
 
-
-
                 Console.WriteLine("| Current Balance in Your loan ACCOUNT is: " + "-" + currentDepo + "$");
                 Console.WriteLine("Current daily interest rate is:%0.12\nEnter the amount which you want to pay: ");
                 Console.WriteLine("Enter -13 to exit from this page...");
@@ -2747,8 +2629,6 @@ namespace Simple_Banking_Program
 
                 //currentDepo = currentDepo + convertedMoney;
                 //amountOfMoney = Convert.ToString(currentDepo);
-
-
 
 
 
@@ -2806,12 +2686,6 @@ namespace Simple_Banking_Program
 
             }
             Console.Clear();
-
-
-
-
-
-
 
 
 
@@ -2968,15 +2842,7 @@ namespace Simple_Banking_Program
 
 
 
-
-
-
-
-
                         break;
-
-
-
 
 
 
@@ -2985,15 +2851,7 @@ namespace Simple_Banking_Program
             }
 
 
-
-
-
-
-
         }
-
-
-
 
 
     }
