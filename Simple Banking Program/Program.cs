@@ -18,7 +18,7 @@ namespace Simple_Banking_Program
 
         static void Main(string[] args)
         {
-
+            
 
             int currentPage = 0; // lets program know where it prints rn
             int checkedEntries = 0; // declared and init. for registerPageManager, its here on main aswell cuz of the poor code design
@@ -2482,7 +2482,8 @@ namespace Simple_Banking_Program
                 if (convertedMoney+currentDepo > 100000)
                 {
                     convertedMoney = 0;
-                    Console.WriteLine("You cant owe more than $100.000,00 to the bank!");
+                    Console.WriteLine("You cant owe more than $100.000,00 to the bank!\nPress Enter To Continue...");
+                    Console.ReadLine();
                     continue;
                 }
                 
@@ -2947,8 +2948,20 @@ namespace Simple_Banking_Program
             getUsername(bankNumber,out userNameHolder,0);
 
 
+            if (dateTime.Hour<20 && dateTime.Hour>6)
+            {
+                Console.Write("Have a nice day, ");
+            }
+            else if(dateTime.Hour>20 && dateTime.Hour <24)
+            {
+                Console.WriteLine("Good evening, ");
+            }
+            else
+            {
+                Console.WriteLine("Good night, ");
+            }
 
-            Console.Write("Current User: ");
+
             Console.ForegroundColor = ConsoleColor.DarkMagenta;
             Console.WriteLine(userNameHolder);
             Console.ForegroundColor= ConsoleColor.Gray;
@@ -2975,7 +2988,7 @@ namespace Simple_Banking_Program
 
 
             
-            Console.Write("| Current Balance in Your Account is: ");
+            Console.Write("| Balance of Your Transfer Account: ");
             Console.ForegroundColor = ConsoleColor.Green;
             Console.WriteLine("$"+currentBalance);
             Console.ForegroundColor = ConsoleColor.Gray;
@@ -2983,7 +2996,7 @@ namespace Simple_Banking_Program
 
 
 
-            Console.Write("| Current balance in interest account: ");
+            Console.Write("| Balance of your interest account: ");
             Console.ForegroundColor = ConsoleColor.Green;
             Console.WriteLine("$"+currentDepoOfInterest);
             Console.ForegroundColor = ConsoleColor.Gray;
@@ -2992,7 +3005,7 @@ namespace Simple_Banking_Program
 
 
             
-            Console.Write("| Current debt: ");
+            Console.Write("| Your Debt: ");
             Console.ForegroundColor = ConsoleColor.Red;
             Console.WriteLine("$"+currentDepo);
             Console.ForegroundColor = ConsoleColor.Gray;
