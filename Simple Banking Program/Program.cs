@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Net.Http.Headers;
 using System.Reflection.Emit;
+using System.Runtime.InteropServices.ComTypes;
 using System.Security.Policy;
 using System.Security.Principal;
 using System.Text;
@@ -1667,7 +1668,7 @@ namespace Simple_Banking_Program
             try
             {
                 string[] everyline = System.IO.File.ReadAllLines("test2.txt");
-
+                ////////
 
 
                 for (int i = 0; i < everyline.Length; i++)
@@ -2571,7 +2572,7 @@ namespace Simple_Banking_Program
 
 
             int convertedMoney = 0;
-            checkInterestDepo(bankNumber, out currentDepo, 1, true); // we're actually checking loan depo, the last parameter indicates that 
+            checkInterestDepo(bankNumber, out currentDepo, 1, true); // we're actually checking loan depo,  last parameter indicates that 
 
             //Console.WriteLine("depo:" + currentDepo);
             //Console.ReadLine();
@@ -2954,11 +2955,11 @@ namespace Simple_Banking_Program
             }
             else if(dateTime.Hour>20 && dateTime.Hour <24)
             {
-                Console.WriteLine("Good evening, ");
+                Console.Write("Good evening, ");
             }
             else
             {
-                Console.WriteLine("Good night, ");
+                Console.Write("Good night, ");
             }
 
 
@@ -3034,31 +3035,43 @@ namespace Simple_Banking_Program
 
             //Console.WriteLine("current banknumber is:"+bankNumber);
             //Console.ReadLine();
-
+            bool isRead=false;
             bool isThere = File.Exists(path);
-
+            username = "ERROR";
 
             if (isThere)
             {
 
-                try
+
+
+
+
+
+
+                string[] everyline = System.IO.File.ReadAllLines(path);
+
+
+
+                for (int i = 0; i < everyline.Length; i++)
                 {
-                    string[] everyline = System.IO.File.ReadAllLines(path);
+                    string[] eachPlace = everyline[i].Split(',');
+
+                    if (eachPlace[3].Equals(bankNumber) && !isRead)
+                    {
+
+                        username = eachPlace[0];
+                        isRead = true;
 
 
-                    lastIndex = everyline.Length - 1;
 
-                    string[] eachPlace = everyline[lastIndex].Split(',');
-                   username = eachPlace[searchTerm];
-
+                    }
 
 
                 }
-                catch (Exception ex)
-                {
 
-                    throw new ApplicationException("Hell nooo!: ", ex);
-                }
+                
+
+
             }
             else
             {
